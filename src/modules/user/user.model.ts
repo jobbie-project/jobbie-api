@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import bcrypt from 'bcrypt';
-@Entity('users')
-class User {
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import bcrypt from "bcrypt";
+@Entity("users")
+export class User {
   @PrimaryGeneratedColumn()
-  id: number;
+  id: string;
 
   @Column()
   name: string;
@@ -14,9 +14,10 @@ class User {
   @Column({ select: false })
   password_hash: string;
 
+  @Column({ nullable: true })
+  email_confirmation_code: string;
+
   verifyPassword(unencryptedPassword: string) {
     return bcrypt.compareSync(unencryptedPassword, this.password_hash);
   }
 }
-
-export default User;
