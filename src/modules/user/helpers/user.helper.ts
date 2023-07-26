@@ -1,4 +1,4 @@
-import ApiError from "@/common/Error";
+import ApiError from "@/common/error";
 import { UserRepository } from "../repositories/user.repositoy";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

@@ -4,36 +4,37 @@ import { JwtAuthGuard } from "../../auth/jwt-auth.guard";
 import { LocalAuthGuard } from "../../auth/local-auth.guard";
 import { CreateUserDto } from "../dto/create-user.dto";
 import { UpdateUserDto } from "../dto/update-user.dto";
-import { UserService } from "../service/user.service";
+import { UserQueryService } from "../service/user-query.service";
+import { UserCreationService } from "../service/user-creation.service";
+import { RoleGuard } from "@/common/guards/role.guard";
+import { UserRole } from "../enums";
 
 @Controller("user")
 export class UserController {
-  constructor(private userService: UserService, private authService: AuthService) {}
-
-  @UseGuards(LocalAuthGuard)
+  constructor(private userQueryService: UserQueryService, private userCreationService: UserCreationService, private authService: AuthService) {}
   @Post("auth")
   authenticate(@Request() req) {
     return this.authService.login(req.user);
   }
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    return this.userCreationService.create(createUserDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.userService.findOneById(+id);
+  async getProfileData(@Param("id") id: string) {
+    return this.userQueryService.findOne({ key: "id", value: id });
   }
 
   @Put(":id")
-  update(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  async updateProfileData(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userCreationService.update(id, updateUserDto);
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.userService.delete(+id);
+  async remove(@Param("id") id: string) {
+    return this.userCreationService.delete(id);
   }
 }

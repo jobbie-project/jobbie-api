@@ -17,6 +17,9 @@ export class User {
   @Column({ nullable: true })
   email_confirmation_code: string;
 
+  @Column({ default: false })
+  email_validated: boolean;
+
   verifyPassword(unencryptedPassword: string) {
     return bcrypt.compareSync(unencryptedPassword, this.password_hash);
   }
