@@ -1,7 +1,7 @@
-import { CreateStudentDto } from "../dto/create-student.dto";
-import { UpdateStudentDto } from "../dto/update-student.dto";
-import { StudentHelper } from "../helpers/student.helper";
-import { StudentRepository } from "../repositories/student.repositoy";
+import { CreateStudentDto } from "@/modules/student/dto/create-student.dto";
+import { UpdateStudentDto } from "@/modules/student/dto/update-student.dto";
+import { StudentHelper } from "@/modules/student/helpers/student.helper";
+import { StudentRepository } from "@/modules/student/repositories/student.repositoy";
 import { Student } from "@/modules/student/student.model";
 
 export class StudentCreationService {

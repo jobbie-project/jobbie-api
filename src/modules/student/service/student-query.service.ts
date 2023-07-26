@@ -1,6 +1,6 @@
-import { FindOneStudentOptions } from "../interfaces/find-one-student-options.interface";
-import { StudentRepository } from "../repositories/student.repositoy";
-import { Student } from "../student.model";
+import { FindOneStudentOptions } from "@/modules/student/interfaces/find-one-student-options.interface";
+import { StudentRepository } from "@/modules/student/repositories/student.repositoy";
+import { Student } from "@/modules/student/student.model";
 
 export class StudentQueryService {
   constructor(private userRepository: StudentRepository) {}

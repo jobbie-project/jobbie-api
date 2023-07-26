@@ -2,12 +2,12 @@ import ApiError from "@/common/error";
 import { StudentRepository } from "../repositories/student.repositoy";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Student } from "../student.model";
+import { Student } from "@/modules/student/student.model";
 export class StudentHelper {
   constructor(private userRepository: StudentRepository) {}
 
   async validateEmail(email: string) {
-    const student = await this.userRepository.findOneByEmail(email);
+    const student = await this.userRepository.findOne({ key: "email", value: email });
     if (student) {
       throw new Error("Email already exists");
     }
@@ -30,7 +30,7 @@ export class StudentHelper {
     } catch (error) {
       throw new ApiError("invalid-token", "Token inválido", 400, true);
     }
-    const student = await this.userRepository.findOneByEmail(userToConfirm.email);
+    const student = await this.userRepository.findOne({ key: "id", value: userToConfirm.id });
     if (!student) throw new ApiError("email-auth-expired-token", "Token não é o mais atual", 404, true);
     student.email_validated = true;
     await this.userRepository.update(student.id, student);
