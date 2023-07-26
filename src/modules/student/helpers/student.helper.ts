@@ -1,5 +1,5 @@
 import ApiError from "@/common/error";
-import { StudentRepository } from "../repositories/student.repositoy";
+import { StudentRepository } from "@/modules/student/repositories/student.repositoy";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Student } from "@/modules/student/student.entity";
