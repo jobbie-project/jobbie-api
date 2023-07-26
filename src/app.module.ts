@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { UserModule } from "./modules/user/user.module";
+import { StudentModule } from "./modules/student/student.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule } from "@nestjs/config";
 import config from "./config";
@@ -7,7 +7,7 @@ import { AuthModule } from "./modules/auth/auth.module";
 
 @Module({
   imports: [
-    UserModule,
+    StudentModule,
     AuthModule,
     ConfigModule.forRoot({ load: [config], isGlobal: true }),
     TypeOrmModule.forRoot({
@@ -22,6 +22,6 @@ import { AuthModule } from "./modules/auth/auth.module";
       autoLoadEntities: true,
     }),
   ],
-  providers: [UserModule],
+  providers: [StudentModule],
 })
 export class AppModule {}

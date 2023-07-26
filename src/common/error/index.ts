@@ -3,15 +3,15 @@ import { Response } from "express";
 class ApiError extends Error {
   userMessage: string;
   statusCode: number;
-  isUserError?: boolean;
+  isStudentError?: boolean;
   response?: object;
   typeError?: "string" | "html";
 
-  constructor(message: string, userMessage: string, statusCode: number, isUserError?: boolean, typeError?: "string" | "html") {
+  constructor(message: string, userMessage: string, statusCode: number, isStudentError?: boolean, typeError?: "string" | "html") {
     super(message);
     this.userMessage = userMessage;
     this.statusCode = statusCode;
-    this.isUserError = isUserError;
+    this.isStudentError = isStudentError;
     this.typeError = typeError;
     Object.setPrototypeOf(this, ApiError.prototype);
   }
@@ -19,7 +19,7 @@ class ApiError extends Error {
 
 export function handleError(err: Error | ApiError, res?: Response) {
   if (err instanceof ApiError) {
-    if (!err.isUserError) {
+    if (!err.isStudentError) {
       console.error({ err: err, stack: err.stack, customMessage: err.userMessage });
     }
 

@@ -1,24 +1,24 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
-import { UserService } from '../user/service/user.service';
-import User from '../user/user.model';
+import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { JwtService } from "@nestjs/jwt";
+import { StudentService } from "../student/service/student.service";
+import Student from "../student/student.model";
 @Injectable()
 export class AuthService {
-  constructor(private userService: UserService, private jwtService: JwtService) {}
+  constructor(private userService: StudentService, private jwtService: JwtService) {}
 
-  async validateUser(username: string, password: string) {
-    const user = await this.userService.findOneByEmail(username);
-    if (!user) throw new NotFoundException('Conta não encontrada');
+  async validateStudent(username: string, password: string) {
+    const student = await this.userService.findOneByEmail(username);
+    if (!student) throw new NotFoundException("Conta não encontrada");
 
-    if (!(await user.verifyPassword(password))) throw new UnauthorizedException('Credenciais inválidas');
+    if (!(await student.verifyPassword(password))) throw new UnauthorizedException("Credenciais inválidas");
 
-    delete user.password_hash;
+    delete student.password_hash;
 
-    return user;
+    return student;
   }
 
-  async login(user: User) {
-    const payload = { sub: user.id, email: user.email };
+  async login(student: Student) {
+    const payload = { sub: student.id, email: student.email };
     return { access_token: this.jwtService.sign(payload) };
   }
 }
