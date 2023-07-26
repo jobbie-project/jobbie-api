@@ -36,4 +36,8 @@ export class UserHelper {
     await this.userRepository.update(user.id, user);
     return { token, email: user.email };
   }
+
+  async verifyPassword(unencryptedPassword: string, user: User) {
+    return bcrypt.compareSync(unencryptedPassword, user.password_hash);
+  }
 }

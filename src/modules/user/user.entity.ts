@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import bcrypt from "bcrypt";
+import { UserRole } from "./enums";
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
@@ -20,7 +21,23 @@ export class User {
   @Column({ default: false })
   email_validated: boolean;
 
-  verifyPassword(unencryptedPassword: string) {
-    return bcrypt.compareSync(unencryptedPassword, this.password_hash);
-  }
+  @Column({
+    type: "enum",
+    enum: UserRole,
+  })
+  role: UserRole;
+
+  @Column({ select: false })
+  document: string;
+
+  /*
+  @Column({nullable: true})
+  @OneToMany(() => Job, (job) => job.owner_user)
+  jobs_posted?: Job[];
+
+  @Column({nullable: true})
+  @ManyToMany(() => Job, (job) => job.applicants)
+  @JoinTable({name: "jobs_applicants"})
+  jobs_applied?: Job[];
+  */
 }
