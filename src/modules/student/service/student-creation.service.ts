@@ -2,7 +2,7 @@ import { CreateStudentDto } from "@/modules/student/dto/create-student.dto";
 import { UpdateStudentDto } from "@/modules/student/dto/update-student.dto";
 import { StudentHelper } from "@/modules/student/helpers/student.helper";
 import { StudentRepository } from "@/modules/student/repositories/student.repositoy";
-import { Student } from "@/modules/student/student.model";
+import { Student } from "@/modules/student/student.entity";
 
 export class StudentCreationService {
   constructor(private userRepository: StudentRepository, private userHelper: StudentHelper) {}

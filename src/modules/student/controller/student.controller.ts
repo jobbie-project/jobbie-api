@@ -8,7 +8,7 @@ import { StudentQueryService } from "@/modules/student/service/student-query.ser
 import { StudentCreationService } from "@/modules/student/service/student-creation.service";
 import { RoleGuard } from "@/common/guards/role.guard";
 import { StudentRole } from "@/modules/student/enums";
-import { Student } from "@/modules/student/student.model";
+import { Student } from "@/modules/student/student.entity";
 
 @Controller("student")
 export class StudentController {

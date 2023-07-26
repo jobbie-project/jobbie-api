@@ -2,7 +2,7 @@ import ApiError from "@/common/error";
 import { StudentRepository } from "../repositories/student.repositoy";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Student } from "@/modules/student/student.model";
+import { Student } from "@/modules/student/student.entity";
 export class StudentHelper {
   constructor(private userRepository: StudentRepository) {}
 

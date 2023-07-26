@@ -1,4 +1,4 @@
-import { Student } from "@/modules/student/student.model";
+import { Student } from "@/modules/student/student.entity";
 import { StudentHelper } from "@/modules/student/helpers/student.helper";
 import SendGrid from "@/common/mail";
 export class StudentMailService {

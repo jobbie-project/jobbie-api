@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { StudentService } from "../student/service/student.service";
-import Student from "../student/student.model";
+import Student from "../student/student.entity";
 @Injectable()
 export class AuthService {
   constructor(private userService: StudentService, private jwtService: JwtService) {}
