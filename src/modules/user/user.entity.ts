@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 import bcrypt from "bcrypt";
 @Entity("users")
-export class Student {
+export class User {
   @PrimaryGeneratedColumn()
   id: string;
 

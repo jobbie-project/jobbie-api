@@ -1,14 +1,14 @@
 import { BadRequestException, Injectable, NestMiddleware, NotFoundException } from "@nestjs/common";
 import { NextFunction, Request, Response } from "express";
-import { StudentQueryService } from "../service/student-query.service";
+import { UserQueryService } from "../service/user-query.service";
 @Injectable()
 export class ValidateIdMiddleware implements NestMiddleware {
-  constructor(private studentQueryService: StudentQueryService) {}
+  constructor(private userQueryService: UserQueryService) {}
   use(req: Request, res: Response, next: NextFunction) {
     try {
       const requestedId = req.params.id;
-      const student = this.studentQueryService.findOne({ key: "id", value: requestedId });
-      if (!student) {
+      const user = this.userQueryService.findOne({ key: "id", value: requestedId });
+      if (!user) {
         return new NotFoundException("Usuário não encontrado");
       }
       next();
