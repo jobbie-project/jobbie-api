@@ -8,7 +8,6 @@ import { RoleGuard } from "@/common/guards/role.guard";
 import { UserRole } from "@/modules/user/enums";
 import { User } from "@/modules/user/user.entity";
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
-import { AuthService } from "@/modules/auth/services/auth.service";
 
 @Controller("user")
 export class UserController {
