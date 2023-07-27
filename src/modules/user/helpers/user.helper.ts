@@ -13,10 +13,6 @@ export class UserHelper {
     }
   }
 
-  generatePasswordHash(password: string) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
-  }
-
   async generateEmailConfirmationToken(userEmail: string) {
     const token = jwt.sign({ email: userEmail }, process.env.JWT_SECRET, {
       expiresIn: "1d",
@@ -35,9 +31,5 @@ export class UserHelper {
     user.email_validated = true;
     await this.userRepository.update(user.id, user);
     return { token, email: user.email };
-  }
-
-  async verifyPassword(unencryptedPassword: string, user: User) {
-    return bcrypt.compareSync(unencryptedPassword, user.password_hash);
   }
 }

@@ -12,7 +12,7 @@ export class User {
   @Column({ unique: true, nullable: false })
   email: string;
 
-  @Column({ select: false })
+  @Column()
   password_hash: string;
 
   @Column({ nullable: true })
@@ -24,10 +24,11 @@ export class User {
   @Column({
     type: "enum",
     enum: UserRole,
+    nullable: true,
   })
   role: UserRole;
 
-  @Column({ select: false })
+  @Column({ select: false, nullable: true })
   document: string;
 
   /*

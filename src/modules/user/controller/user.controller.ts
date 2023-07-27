@@ -12,21 +12,15 @@ import { AuthService } from "@/modules/auth/services/auth.service";
 
 @Controller("user")
 export class UserController {
-  constructor(private userQueryService: UserQueryService, private userCreationService: UserCreationService, private authService: AuthService) {}
-  @Post("auth")
-  async authenticate(@Req() req: Request) {
-    const user = req.user as User;
-    const asb = (await this.userQueryService.findOne({ key: "id", value: user.id })) as User;
-    return await asb.verifyPassword(req.body.password);
-  }
+  constructor(private userQueryService: UserQueryService, private userCreationService: UserCreationService) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    return this.userCreationService.create(createUserDto);
+    return await this.userCreationService.create(createUserDto);
   }
 
-  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   @Get()
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async getProfileData(@Req() req: Request) {
     const user = req.user as User;
     return this.userQueryService.findOne({ key: "id", value: user.id });

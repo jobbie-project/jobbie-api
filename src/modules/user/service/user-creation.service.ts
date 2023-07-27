@@ -1,19 +1,14 @@
 import { CreateUserDto } from "@/modules/user/dto/create-user.dto";
 import { UpdateUserDto } from "@/modules/user/dto/update-user.dto";
-import { UserHelper } from "@/modules/user/helpers/user.helper";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
-import { User } from "@/modules/user/user.entity";
+import { Injectable } from "@nestjs/common";
 
+@Injectable()
 export class UserCreationService {
-  constructor(private userRepository: UserRepository, private userHelper: UserHelper) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async create(userToCreate: CreateUserDto) {
-    const newUser = new User();
-    newUser.name = userToCreate.name;
-    newUser.email = userToCreate.email;
-    newUser.password_hash = this.userHelper.generatePasswordHash(userToCreate.password);
-
-    return this.userRepository.create(newUser);
+    return await this.userRepository.create(userToCreate);
   }
 
   async update(id: string, userToUpdate: UpdateUserDto) {

@@ -1,17 +1,15 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from "@nestjs/common";
-import { AuthModule } from "src/modules/auth/auth.module";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { User } from "./user.entity";
 import { UserController } from "./controller/user.controller";
-import { ValidateIdMiddleware } from "./middleware/validate-id.middleware";
-import { UserQueryService } from "./service/user-query.service";
 import { UserCreationService } from "./service/user-creation.service";
-import { UserHelper } from "./helpers/user.helper";
+import { UserQueryService } from "./service/user-query.service";
+import { UserRepository } from "./repositories/user.repository";
+import { Module } from "@nestjs/common";
+
 @Module({
-  imports: [AuthModule],
-  providers: [UserQueryService, UserCreationService, UserHelper],
+  imports: [TypeOrmModule.forFeature([User])],
   controllers: [UserController],
+  providers: [UserCreationService, UserQueryService, UserRepository],
+  exports: [UserQueryService, UserCreationService],
 })
-export class UserModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ValidateIdMiddleware).forRoutes({ path: "user/:id", method: RequestMethod.PUT }, { path: "user/:id", method: RequestMethod.DELETE });
-  }
-}
+export class UserModule {}

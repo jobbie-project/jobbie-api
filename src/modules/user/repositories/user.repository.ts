@@ -4,15 +4,17 @@ import { Repository } from "typeorm";
 import { UpdateUserDto } from "../dto/update-user.dto";
 import { User } from "@/modules/user/user.entity";
 import { FindOneUserOptions } from "../interfaces/find-one-user-options.interface";
+import { CreateUserDto } from "../dto/create-user.dto";
+import * as bcrypt from "bcrypt";
 @Injectable()
 export class UserRepository {
-  constructor(
-    @InjectRepository(User)
-    private userRepository: Repository<User>
-  ) {}
+  constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  async create(user: User) {
-    const newUser = await this.userRepository.save(user);
+  async create(user: CreateUserDto): Promise<User> {
+    const newUser = await this.userRepository.save({
+      ...user,
+      password_hash: bcrypt.hashSync(user.password, bcrypt.genSaltSync(10)),
+    });
     return newUser;
   }
 
