@@ -1,14 +1,65 @@
-import { IsEmail, IsNotEmpty, IsString } from "class-validator";
+import { isFatecEmail } from "@/common/validators/student-email.validator";
+import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
 
 export class CreateUserDto {
-  @IsString()
-  @IsNotEmpty()
-  name: string;
-
-  @IsEmail()
+  @IsNotEmpty({
+    context: {
+      message: `missing-name`,
+      userMessage: `Nome obrigatório`,
+    },
+  })
+  @IsString({
+    context: {
+      message: `invalid-name`,
+      userMessage: `Nome inválido`,
+    },
+  })
+  @IsNotEmpty({
+    context: {
+      message: `missing-email`,
+      userMessage: `Email obrigatório`,
+    },
+  })
+  @IsString({
+    context: {
+      message: `invalid-email`,
+      userMessage: `Email inválido`,
+    },
+  })
+  @IsEmail(
+    {},
+    {
+      context: {
+        message: `invalid-email`,
+        userMessage: `Email inválido`,
+      },
+    }
+  )
+  @isFatecEmail({
+    context: {
+      message: `invalid-email`,
+      userMessage: `Email não é da Fatec`,
+    },
+  })
   email: string;
 
-  @IsString()
-  @IsNotEmpty()
+  @IsNotEmpty({
+    context: {
+      message: `missing-password`,
+      userMessage: `Senha obrigatória`,
+    },
+  })
+  @IsString({
+    context: {
+      message: `invalid-password`,
+      userMessage: `Senha inválida`,
+    },
+  })
+  @Length(6, 30, {
+    context: {
+      message: `invalid-password`,
+      userMessage: `A senha deve ter entre 6 e 30 caracteres`,
+    },
+  })
   password: string;
 }
