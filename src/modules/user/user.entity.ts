@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "./enums";
+import { Student } from "../student/student.entity";
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
@@ -23,9 +24,11 @@ export class User {
   @Column({
     type: "enum",
     enum: UserRole,
-    nullable: true,
   })
   role: UserRole;
+
+  @OneToOne(() => Student, (student) => student.user)
+  student: Student;
 
   // @Column({ select: false, nullable: true })
   // document: string;
