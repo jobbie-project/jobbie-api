@@ -14,6 +14,8 @@ export class CreateUserDto {
       userMessage: `Nome inválido`,
     },
   })
+  name: string;
+
   @IsNotEmpty({
     context: {
       message: `missing-email`,

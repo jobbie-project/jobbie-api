@@ -8,19 +8,17 @@ import { RoleGuard } from "@/common/guards/role.guard";
 import { UserRole } from "@/modules/user/enums";
 import { User } from "@/modules/user/user.entity";
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
+import { VerifyEmailDto } from "../dto/verify-email.dto";
+import { ResendEmailConfirmationDto } from "../dto/ressend-email-confirmation.dto";
+import { UserValidationService } from "../service/user-validation.service";
 
 @Controller("user")
 export class UserController {
-  constructor(private userQueryService: UserQueryService, private userCreationService: UserCreationService) {}
+  constructor(private userQueryService: UserQueryService, private userCreationService: UserCreationService, private userValidationService: UserValidationService) {}
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.userCreationService.create(createUserDto);
-  }
-
-  @Post("verify-email/:token")
-  async verifyEmail(@Param("token") token: string) {
-    return this.userCreationService.verifyEmail(token);
   }
 
   @Get()

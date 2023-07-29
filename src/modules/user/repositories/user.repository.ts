@@ -7,6 +7,7 @@ import { FindOneUserOptions } from "../interfaces/find-one-user-options.interfac
 import { CreateUserDto } from "../dto/create-user.dto";
 import * as bcrypt from "bcrypt";
 import { CreateUserPayload } from "../interfaces/create-user.payload";
+import { UpdateUserPayload } from "../interfaces/update-user.payload";
 @Injectable()
 export class UserRepository {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
@@ -31,14 +32,10 @@ export class UserRepository {
     return user;
   }
 
-  async update(id: string, user: UpdateUserDto) {
-    const updatedUser = await this.userRepository.update(id, user);
-    return updatedUser;
-  }
-
-  async validateEmail(id: string) {
-    const updatedUser = await this.userRepository.update(id, { email_validated: true });
-    return updatedUser;
+  async update(id: string, payload: UpdateUserPayload) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    Object.assign(user, payload);
+    return await this.userRepository.save(user);
   }
 
   async delete(id: string) {

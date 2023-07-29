@@ -7,11 +7,12 @@ import { UserRepository } from "./repositories/user.repository";
 import { Module } from "@nestjs/common";
 import { UserMailService } from "./service/mail/user.mail.service";
 import { UserHelper } from "./helpers/user.helper";
+import { UserValidationService } from "./service/user-validation.service";
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
   controllers: [UserController],
-  providers: [UserCreationService, UserQueryService, UserRepository, UserMailService, UserHelper],
-  exports: [UserQueryService, UserCreationService],
+  providers: [UserCreationService, UserQueryService, UserRepository, UserMailService, UserHelper, UserValidationService],
+  exports: [UserQueryService, UserCreationService, UserValidationService],
 })
 export class UserModule {}
