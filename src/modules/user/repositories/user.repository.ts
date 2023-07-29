@@ -6,11 +6,12 @@ import { User } from "@/modules/user/user.entity";
 import { FindOneUserOptions } from "../interfaces/find-one-user-options.interface";
 import { CreateUserDto } from "../dto/create-user.dto";
 import * as bcrypt from "bcrypt";
+import { CreateUserPayload } from "../interfaces/create-user.payload";
 @Injectable()
 export class UserRepository {
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {}
 
-  async create(user: CreateUserDto): Promise<User> {
+  async create(user: CreateUserPayload): Promise<User> {
     const newUser = await this.userRepository.save({
       ...user,
       password_hash: bcrypt.hashSync(user.password, bcrypt.genSaltSync(10)),
@@ -32,6 +33,11 @@ export class UserRepository {
 
   async update(id: string, user: UpdateUserDto) {
     const updatedUser = await this.userRepository.update(id, user);
+    return updatedUser;
+  }
+
+  async validateEmail(id: string) {
+    const updatedUser = await this.userRepository.update(id, { email_validated: true });
     return updatedUser;
   }
 

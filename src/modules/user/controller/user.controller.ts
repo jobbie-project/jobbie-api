@@ -18,6 +18,11 @@ export class UserController {
     return await this.userCreationService.create(createUserDto);
   }
 
+  @Post("verify-email/:token")
+  async verifyEmail(@Param("token") token: string) {
+    return this.userCreationService.verifyEmail(token);
+  }
+
   @Get()
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async getProfileData(@Req() req: Request) {
@@ -25,7 +30,7 @@ export class UserController {
     return this.userQueryService.findOne({ key: "id", value: user.id });
   }
 
-  @Put(":id")
+  @Put()
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async updateProfileData(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userCreationService.update(id, updateUserDto);

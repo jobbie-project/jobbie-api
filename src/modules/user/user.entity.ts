@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import bcrypt from "bcrypt";
 import { UserRole } from "./enums";
 @Entity("users")
 export class User {
@@ -16,7 +15,7 @@ export class User {
   password_hash: string;
 
   @Column({ nullable: true })
-  email_confirmation_code: string;
+  email_confirmation_token: string;
 
   @Column({ default: false })
   email_validated: boolean;
@@ -28,8 +27,8 @@ export class User {
   })
   role: UserRole;
 
-  @Column({ select: false, nullable: true })
-  document: string;
+  // @Column({ select: false, nullable: true })
+  // document: string;
 
   /*
   @Column({nullable: true})
