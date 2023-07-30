@@ -1,6 +1,7 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { UserRole } from "./enums";
 import { Student } from "../student/student.entity";
+import { Company } from "../company/company.entity";
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
@@ -27,20 +28,15 @@ export class User {
   })
   role: UserRole;
 
-  @OneToOne(() => Student, (student) => student.user)
-  student: Student;
+  @OneToOne(() => Student, (student) => student.user, {
+    nullable: true,
+  })
+  @JoinColumn({ name: "student_id" })
+  student?: Student;
 
-  // @Column({ select: false, nullable: true })
-  // document: string;
-
-  /*
-  @Column({nullable: true})
-  @OneToMany(() => Job, (job) => job.owner_user)
-  jobs_posted?: Job[];
-
-  @Column({nullable: true})
-  @ManyToMany(() => Job, (job) => job.applicants)
-  @JoinTable({name: "jobs_applicants"})
-  jobs_applied?: Job[];
-  */
+  @OneToOne(() => Company, (company) => company.user, {
+    nullable: true,
+  })
+  @JoinColumn({ name: "company_id" })
+  company?: Company;
 }
