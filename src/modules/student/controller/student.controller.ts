@@ -4,12 +4,14 @@ import { StudentCreationService } from "../service/student-creation.service";
 import { User } from "@/modules/user/user.entity";
 import { Request } from "express";
 import { CreateStudentDto } from "../dtos/create-student.dto";
+import { UserRole } from "@/modules/user/enums";
+import { RoleGuard } from "@/common/guards/role.guard";
 
 @Controller("student")
 export class StudentController {
   constructor(private studentCreationService: StudentCreationService) {}
   @Post("create")
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async create(@Req() req: Request, @Body() createStudentDto: CreateStudentDto) {
     const user = req.user as User;
     return await this.studentCreationService.create(user, createStudentDto);
