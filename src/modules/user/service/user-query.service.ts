@@ -10,4 +10,8 @@ export class UserQueryService {
   async findOne(options: FindOneUserOptions): Promise<User> {
     return await this.userRepository.findOne(options);
   }
+
+  async update(id: string, payload: Partial<User>): Promise<User> {
+    return await this.userRepository.update(id, payload);
+  }
 }
