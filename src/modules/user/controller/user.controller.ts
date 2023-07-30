@@ -16,7 +16,7 @@ import { UserValidationService } from "../service/user-validation.service";
 export class UserController {
   constructor(private userQueryService: UserQueryService, private userCreationService: UserCreationService, private userValidationService: UserValidationService) {}
 
-  @Post()
+  @Post("create")
   async create(@Body() createUserDto: CreateUserDto) {
     return await this.userCreationService.create(createUserDto);
   }

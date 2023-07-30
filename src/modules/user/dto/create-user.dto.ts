@@ -65,18 +65,4 @@ export class CreateUserDto {
     },
   })
   password: string;
-
-  @IsNotEmpty({
-    context: {
-      message: `missing-user-role`,
-      userMessage: `Tipo de usuário obrigatório`,
-    },
-  })
-  @IsIn(Object.values(UserRole), {
-    context: {
-      message: `invalid-user-role`,
-      userMessage: `Tipo de usuário inválido`,
-    },
-  })
-  role: UserRole;
 }
