@@ -1,4 +1,5 @@
 import { UserQueryService } from "@/modules/user/service/user-query.service";
+import { User } from "@/modules/user/user.entity";
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
@@ -12,10 +13,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    console.log(payload, "JwtStrategy");
-    // const user = this.userQueryService.findOne({ key: "id", value: payload.sub });
-    const user = {};
+  async validate(payload: User) {
+    const user = this.userQueryService.findOne({ key: "id", value: payload.id });
     return user;
   }
 }

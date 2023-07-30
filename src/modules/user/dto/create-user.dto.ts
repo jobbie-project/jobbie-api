@@ -1,5 +1,6 @@
 import { isFatecEmail } from "@/common/validators/student-email.validator";
-import { IsEmail, IsNotEmpty, IsString, Length } from "class-validator";
+import { IsEmail, IsIn, IsNotEmpty, IsString, Length } from "class-validator";
+import { UserRole } from "../enums";
 
 export class CreateUserDto {
   @IsNotEmpty({
@@ -64,4 +65,18 @@ export class CreateUserDto {
     },
   })
   password: string;
+
+  @IsNotEmpty({
+    context: {
+      message: `missing-user-role`,
+      userMessage: `Tipo de usuário obrigatório`,
+    },
+  })
+  @IsIn(Object.values(UserRole), {
+    context: {
+      message: `invalid-user-role`,
+      userMessage: `Tipo de usuário inválido`,
+    },
+  })
+  role: UserRole;
 }

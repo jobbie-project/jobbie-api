@@ -21,7 +21,6 @@ export class UserValidationService {
     } catch (error) {
       throw new ApiError("invalid-token", "Token inválido", 400, true);
     }
-    console.log("token");
     const user = await this.userQueryService.findOne({ key: "email_confirmation_token", value: token });
     if (!user) throw new ApiError("email-auth-expired-token", "Token não é o mais atual", 404, true);
     user.email_validated = true;

@@ -22,6 +22,7 @@ export class UserRepository {
 
   async findOne(options: FindOneUserOptions) {
     const qb = this.userRepository.createQueryBuilder("user");
+    if (options.withPasswordHash) qb.addSelect("user.password_hash");
     if (options.relations) {
       options.relations.forEach((relation) => {
         qb.leftJoinAndSelect(`user.${relation}`, relation);

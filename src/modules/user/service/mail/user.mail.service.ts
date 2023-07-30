@@ -1,5 +1,6 @@
 import { User } from "@/modules/user/user.entity";
 import SendGrid from "@/common/mail";
+import ApiError from "@/common/error";
 export class UserMailService {
   async sendVerificationEmail(user: User, token: string) {
     const link = `${process.env.FRONTEND_URL ?? "localhost"}/confirmar-email?token=${token}`;
@@ -16,7 +17,7 @@ export class UserMailService {
       };
       await SendGrid.send(msg);
     } catch (error) {
-      console.log(error, "SendgridAccountMailService");
+      throw new ApiError("sendgrid-error", "Erro ao enviar email", 500, true);
     }
   }
 }

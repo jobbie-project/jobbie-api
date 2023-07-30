@@ -11,6 +11,7 @@ export class AuthService {
     const user = await this.userQueryService.findOne({
       key: "email",
       value: username,
+      withPasswordHash: true,
     });
     if (user && (await bcrypt.compare(password, user.password_hash))) {
       return {
@@ -24,7 +25,7 @@ export class AuthService {
   }
 
   async getLoginResponse(user: User) {
-    const payload = { sub: user.id, email: user.email };
+    const payload = { id: user.id, name: user.name, email: user.email, role: user.role };
     return {
       id: user.id,
       name: user.name,

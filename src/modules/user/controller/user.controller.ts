@@ -22,7 +22,7 @@ export class UserController {
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
+  @UseGuards(JwtAuthGuard)
   async getProfileData(@Req() req: Request) {
     const user = req.user as User;
     return this.userQueryService.findOne({ key: "id", value: user.id });
