@@ -1,18 +1,28 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Curriculum } from "../curriculum/curriculum.entity";
 
 @Entity("tech_stacks")
 export class TechStack {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   name: string;
 
-  @Column()
+  @Column({
+    default: true,
+  })
   is_active: boolean;
 
-  // @ManyToMany(() => Curriculum, (curriculum) => curriculum.tech_stacks)
-  // students: Curriculum[];
+  @ManyToMany(() => Curriculum, (curriculum) => curriculum.tech_stacks)
+  @JoinTable({
+    name: "curriculums_tech_stacks",
+    joinColumns: [{ name: "tech_stack_id" }],
+    inverseJoinColumns: [{ name: "curriculum_id" }],
+  })
+  curriculums: Curriculum[];
 
   @CreateDateColumn()
   created_at: Date;
