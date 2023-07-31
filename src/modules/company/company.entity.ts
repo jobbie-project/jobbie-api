@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { CompanySize } from "./enums";
 import { User } from "../user/user.entity";
 import { Job } from "../job/job.entity";
@@ -22,4 +22,13 @@ export class Company {
 
   @OneToOne(() => User, (user) => user.company)
   user: User;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_At: Date;
 }

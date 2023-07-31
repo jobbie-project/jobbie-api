@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Student } from "../student/student.entity";
 import { Company } from "../company/company.entity";
 
@@ -24,4 +24,13 @@ export class Job {
   @ManyToOne(() => Company, (company) => company.jobs_posted)
   @JoinColumn({ name: "owner_company_id" })
   owner_company: Company;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_At: Date;
 }

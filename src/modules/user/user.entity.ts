@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserRole } from "./enums";
 import { Student } from "../student/student.entity";
 import { Company } from "../company/company.entity";
@@ -41,4 +41,13 @@ export class User {
   })
   @JoinColumn({ name: "company_id" })
   company?: Company;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
+
+  @DeleteDateColumn()
+  deleted_At: Date;
 }
