@@ -1,11 +1,15 @@
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EducationLevel, JobType } from "./enums";
 import { TechStack } from "../tech-stacks/tech-stacks.entity";
+import { Student } from "../student/student.entity";
 
 @Entity("curriculums")
 export class Curriculum {
   @PrimaryGeneratedColumn()
   id: string;
+
+  @OneToOne(() => Student, (student) => student.curriculum)
+  student: Student;
 
   @ManyToMany(() => TechStack, (tech_stack) => tech_stack.curriculums)
   tech_stacks: TechStack[];
