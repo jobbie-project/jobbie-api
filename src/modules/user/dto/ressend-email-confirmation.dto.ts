@@ -1,4 +1,3 @@
-import { isFatecEmail } from "@/common/validators/student-email.validator";
 import { IsEmail, IsNotEmpty, IsString } from "class-validator";
 
 export class ResendEmailConfirmationDto {
@@ -23,11 +22,5 @@ export class ResendEmailConfirmationDto {
       },
     }
   )
-  @isFatecEmail({
-    context: {
-      message: `invalid-email`,
-      userMessage: `Email não é da Fatec`,
-    },
-  })
   email: string;
 }

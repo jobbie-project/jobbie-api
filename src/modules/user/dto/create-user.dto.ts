@@ -1,4 +1,4 @@
-import { isFatecEmail } from "@/common/validators/student-email.validator";
+import { IsFatecEmail } from "@/common/validators/student-email.validator";
 import { IsEmail, IsIn, IsNotEmpty, IsString, Length } from "class-validator";
 import { UserRole } from "../enums";
 
@@ -38,7 +38,7 @@ export class CreateUserDto {
       },
     }
   )
-  @isFatecEmail({
+  @IsFatecEmail({
     context: {
       message: `invalid-email`,
       userMessage: `Email não é da Fatec`,
