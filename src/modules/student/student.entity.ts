@@ -45,6 +45,7 @@ export class Student {
   jobs_applied: Job[];
 
   @OneToOne(() => Curriculum, (curriculum) => curriculum.student)
+  @JoinColumn({ name: "curriculum_id" })
   curriculum: Curriculum;
 
   @CreateDateColumn()

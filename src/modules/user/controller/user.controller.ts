@@ -18,24 +18,25 @@ export class UserController {
 
   @Post("create")
   async create(@Body() createUserDto: CreateUserDto) {
-    return await this.userCreationService.create(createUserDto);
+    const user = await this.userCreationService.create(createUserDto);
+    return { ok: true, email: user.email };
   }
 
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  async getProfileData(@Req() req: Request) {
-    const user = req.user as User;
-    return this.userQueryService.findOne({ key: "id", value: user.id });
-  }
+  // @Get()
+  // @UseGuards(JwtAuthGuard)
+  // async getProfileData(@Req() req: Request) {
+  //   const user = req.user as User;
+  //   return this.userQueryService.findOne({ key: "id", value: user.id });
+  // }
 
-  @Put()
-  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
-  async updateProfileData(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userCreationService.update(id, updateUserDto);
-  }
+  // @Put()
+  // @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
+  // async updateProfileData(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
+  //   return this.userCreationService.update(id, updateUserDto);
+  // }
 
-  @Delete(":id")
-  async remove(@Param("id") id: string) {
-    return this.userCreationService.delete(id);
-  }
+  // @Delete(":id")
+  // async remove(@Param("id") id: string) {
+  //   return this.userCreationService.delete(id);
+  // }
 }

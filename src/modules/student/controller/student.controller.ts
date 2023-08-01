@@ -6,6 +6,7 @@ import { Request } from "express";
 import { CreateStudentDto } from "../dtos/create-student.dto";
 import { UserRole } from "@/modules/user/enums";
 import { RoleGuard } from "@/common/guards/role.guard";
+import ApiError from "@/common/error";
 
 @Controller("student")
 export class StudentController {
@@ -14,6 +15,10 @@ export class StudentController {
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async create(@Req() req: Request, @Body() createStudentDto: CreateStudentDto) {
     const user = req.user as User;
-    return await this.studentCreationService.create(user, createStudentDto);
+    if (user.student) {
+      throw new ApiError("user-already-student", "Usuário já é um estudante", 400);
+    }
+    const student = await this.studentCreationService.create(user, createStudentDto);
+    return { ok: true, student };
   }
 }

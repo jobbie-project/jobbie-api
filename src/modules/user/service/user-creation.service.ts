@@ -6,6 +6,7 @@ import { UserQueryService } from "./user-query.service";
 import ApiError from "@/common/error";
 import { UserMailService } from "./mail/user.mail.service";
 import { UserHelper } from "../helpers/user.helper";
+import { User } from "../user.entity";
 
 @Injectable()
 export class UserCreationService {
@@ -16,13 +17,13 @@ export class UserCreationService {
     private userHelper: UserHelper
   ) {}
 
-  async create(userToCreate: CreateUserDto) {
+  async create(userToCreate: CreateUserDto): Promise<User> {
     const userExists = await this.userQueryService.findOne({ key: "email", value: userToCreate.email });
     if (userExists) throw new ApiError("email-already-in-use", "Este email já está em uso", 400);
     const token = await this.userHelper.generateEmailConfirmationToken(userToCreate.email);
     const user = await this.userRepository.create({ ...userToCreate, email_confirmation_token: token });
     await this.userMailService.sendVerificationEmail(user, token);
-    return { ok: true, confirm_email: true, email: user.email };
+    return user;
   }
 
   async update(id: string, userToUpdate: UpdateUserDto) {
