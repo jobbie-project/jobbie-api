@@ -8,8 +8,25 @@ export class Company {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column()
-  name: string;
+  @Column({
+    nullable: true,
+  })
+  logo_url?: string;
+
+  @Column({
+    nullable: true,
+  })
+  website_url?: string;
+
+  @Column({
+    nullable: true,
+  })
+  description?: string;
+
+  @Column({
+    nullable: true,
+  })
+  phone?: string;
 
   @Column({
     type: "enum",

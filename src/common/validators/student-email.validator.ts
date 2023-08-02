@@ -1,7 +1,7 @@
 import ApiError from "@/common/error";
 import { registerDecorator, ValidationArguments, ValidationOptions } from "class-validator";
 import { validateFatecEmail } from "./";
-import { CreateUserDto } from "@/modules/user/dto/create-user.dto";
+import { CreateUserDto } from "@/modules/user/dtos/create-user.dto";
 import { UserRole } from "@/modules/user/enums";
 
 export function IsFatecEmail(validationOptions?: ValidationOptions) {

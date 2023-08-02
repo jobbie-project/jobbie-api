@@ -1,15 +1,15 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from "@nestjs/common";
-import { CreateUserDto } from "@/modules/user/dto/create-user.dto";
+import { CreateUserDto } from "@/modules/user/dtos/create-user.dto";
 import { Request } from "express";
-import { UpdateUserDto } from "@/modules/user/dto/update-user.dto";
+import { UpdateUserDto } from "@/modules/user/dtos/update-user.dto";
 import { UserQueryService } from "@/modules/user/service/user-query.service";
 import { UserCreationService } from "@/modules/user/service/user-creation.service";
 import { RoleGuard } from "@/common/guards/role.guard";
 import { UserRole } from "@/modules/user/enums";
 import { User } from "@/modules/user/user.entity";
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
-import { VerifyEmailDto } from "../dto/verify-email.dto";
-import { ResendEmailConfirmationDto } from "../dto/ressend-email-confirmation.dto";
+import { VerifyEmailDto } from "../dtos/verify-email.dto";
+import { ResendEmailConfirmationDto } from "../dtos/ressend-email-confirmation.dto";
 import { UserValidationService } from "../service/user-validation.service";
 
 @Controller("user")

@@ -1,5 +1,5 @@
-import { CreateUserDto } from "@/modules/user/dto/create-user.dto";
-import { UpdateUserDto } from "@/modules/user/dto/update-user.dto";
+import { CreateUserDto } from "@/modules/user/dtos/create-user.dto";
+import { UpdateUserDto } from "@/modules/user/dtos/update-user.dto";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
 import { Injectable } from "@nestjs/common";
 import { UserQueryService } from "./user-query.service";

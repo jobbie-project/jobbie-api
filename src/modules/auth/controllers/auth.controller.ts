@@ -3,8 +3,8 @@ import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 import { Request } from "express";
 import { AuthService } from "../services/auth.service";
 import { AuthGuard } from "@nestjs/passport";
-import { ResendEmailConfirmationDto } from "@/modules/user/dto/ressend-email-confirmation.dto";
-import { VerifyEmailDto } from "@/modules/user/dto/verify-email.dto";
+import { ResendEmailConfirmationDto } from "@/modules/user/dtos/ressend-email-confirmation.dto";
+import { VerifyEmailDto } from "@/modules/user/dtos/verify-email.dto";
 import { UserValidationService } from "@/modules/user/service/user-validation.service";
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
 
