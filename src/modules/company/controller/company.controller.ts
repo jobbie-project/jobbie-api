@@ -12,13 +12,13 @@ import { CompanyCreationService } from "../services/company-creation.service";
 export class CompanyController {
   constructor(private companyCreationService: CompanyCreationService) {}
   @Post("create")
-  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
-  async create(@Req() req: Request, @Body() createStudentDto: CreateCompanyDto) {
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY]))
+  async create(@Req() req: Request, @Body() createCompanyDto: CreateCompanyDto) {
     const user = req.user as User;
-    if (user.student) {
-      throw new ApiError("user-already-student", "Usuário já é um estudante", 400);
+    if (user.company) {
+      throw new ApiError("user-already-company", "Usuário já é uma empresa", 400);
     }
-    const student = await this.companyCreationService.create(user, createStudentDto);
-    return { ok: true, student };
+    const company = await this.companyCreationService.create(user, createCompanyDto);
+    return { ok: true, company };
   }
 }
