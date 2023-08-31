@@ -8,16 +8,9 @@ import { UserCreationService } from "@/modules/user/service/user-creation.servic
 
 @Injectable()
 export class StudentRepository {
-  constructor(
-    @InjectRepository(Student) private readonly studentRepository: Repository<Student>,
-    private userQueryService: UserQueryService,
-    private userCreationService: UserCreationService
-  ) {}
+  constructor(@InjectRepository(Student) private readonly studentRepository: Repository<Student>) {}
   async create(createStudentPayload: CreateStudentPayload): Promise<Student> {
     const newStudent = await this.studentRepository.save(createStudentPayload);
-    const user = await this.userQueryService.findOne({ key: "id", value: createStudentPayload.user.id });
-    user.student = newStudent;
-    await this.userCreationService.update(user.id, user);
     return newStudent;
   }
 }

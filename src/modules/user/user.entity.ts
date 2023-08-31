@@ -24,6 +24,9 @@ export class User {
   @Column({ default: false })
   email_validated: boolean;
 
+  @Column({ default: false })
+  profile_completed: boolean;
+
   @Column({
     type: "enum",
     enum: UserRole,
