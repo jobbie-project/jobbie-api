@@ -12,7 +12,7 @@ import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
 export class AuthController {
   constructor(private authService: AuthService, private userValidationService: UserValidationService) {}
   @Post("authenticate")
-  @UseGuards(AuthGuard("local")) // The guard handles the login logic
+  @UseGuards(AuthGuard("local"))
   async authenticate(@Req() req: Request) {
     const user = req.user as User;
     return this.authService.getLoginResponse(user);
@@ -33,5 +33,11 @@ export class AuthController {
   @Post("verify-email")
   async verifyEmail(@Body() verifyEmailDto: VerifyEmailDto) {
     return this.userValidationService.verifyEmail(verifyEmailDto.token);
+  }
+
+  @Post("forgot-password")
+  async forgotPassword(@Body() forgotPasswordDto: { email: string }) {
+    await this.authService.forgotPassword(forgotPasswordDto.email);
+    return { ok: true };
   }
 }

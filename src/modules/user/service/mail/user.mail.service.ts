@@ -17,7 +17,7 @@ export class UserMailService {
       };
       await SendGrid.send(msg);
     } catch (error) {
-      throw new ApiError("sendgrid-error", "Erro ao enviar email", 500, true);
+      throw new ApiError("sendgrid-error", "Erro ao enviar email de verificação de conta", 500, true);
     }
   }
 }

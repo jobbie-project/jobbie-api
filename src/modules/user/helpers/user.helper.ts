@@ -1,8 +1,10 @@
 import ApiError from "@/common/error";
 import { UserRepository } from "@/modules/user/repositories/user.repository";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { User } from "@/modules/user/user.entity";
+import { Injectable } from "@nestjs/common";
+
+@Injectable()
 export class UserHelper {
   constructor(private userRepository: UserRepository) {}
 
