@@ -37,6 +37,12 @@ export class UserRepository {
     return await this.userRepository.save(user);
   }
 
+  async updatePassword(id: string, passwordHash: string) {
+    const user = await this.userRepository.findOne({ where: { id } });
+    user.password_hash = passwordHash;
+    return await this.userRepository.save(user);
+  }
+
   async delete(id: string) {
     const deletedUser = await this.userRepository.delete(id);
     return { ok: true };

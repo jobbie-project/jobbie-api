@@ -32,6 +32,10 @@ export class UserCreationService {
     return this.userRepository.update(id, userToUpdate);
   }
 
+  async updateUserPassoword(id: string, passwordHash: string) {
+    return this.userRepository.updatePassword(id, passwordHash);
+  }
+
   async delete(id: string) {
     return this.userRepository.delete(id);
   }

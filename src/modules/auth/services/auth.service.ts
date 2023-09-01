@@ -6,9 +6,17 @@ import bcrypt from "bcrypt";
 import { AuthMailService } from "./mail/auth.mail.service";
 import { AuthHelper } from "../helpers/auth.helper";
 import ApiError from "@/common/error";
+import { ResetPasswordDto } from "../dtos";
+import { UserCreationService } from "@/modules/user/service/user-creation.service";
 @Injectable()
 export class AuthService {
-  constructor(private userQueryService: UserQueryService, private jwtService: JwtService, private authMailService: AuthMailService, private authHelper: AuthHelper) {}
+  constructor(
+    private userQueryService: UserQueryService,
+    private jwtService: JwtService,
+    private authMailService: AuthMailService,
+    private authHelper: AuthHelper,
+    private userCreationService: UserCreationService
+  ) {}
 
   async validateUser(username: string, password: string): Promise<Partial<User>> {
     const user = await this.userQueryService.findOne({
@@ -44,5 +52,16 @@ export class AuthService {
     if (!user) throw new ApiError("user-not-found", "Usuário não encontrado", 404, true);
     const token = await this.authHelper.generateResetPasswordToken(email);
     await this.authMailService.sendResetPasswordEmail(user, token);
+  }
+
+  async resetPassword(resetPasswordDto: ResetPasswordDto) {
+    const isTokenValid = await this.jwtService.verify(resetPasswordDto.token);
+    if (!isTokenValid) throw new ApiError("invalid-token", "Token associado ao link é inválido", 400, true);
+    if (!(resetPasswordDto.password === resetPasswordDto.confim_password)) throw new ApiError("passwords-not-match", "As senhas não conferem", 400, true);
+    const { email } = this.jwtService.decode(resetPasswordDto.token) as { email: string };
+    const user = await this.userQueryService.findOne({ key: "email", value: email });
+    if (!user) throw new ApiError("user-not-found", "Usuário não encontrado", 404, true);
+    const password_hash = await bcrypt.hash(resetPasswordDto.password, bcrypt.genSaltSync(10));
+    await this.userCreationService.updateUserPassoword(user.id, password_hash);
   }
 }

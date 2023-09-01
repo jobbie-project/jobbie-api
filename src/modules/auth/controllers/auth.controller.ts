@@ -7,6 +7,7 @@ import { ResendEmailConfirmationDto } from "@/modules/user/dtos/ressend-email-co
 import { VerifyEmailDto } from "@/modules/user/dtos/verify-email.dto";
 import { UserValidationService } from "@/modules/user/service/user-validation.service";
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
+import { ResetPasswordDto } from "../dtos/reset-password.dto";
 
 @Controller("auth")
 export class AuthController {
@@ -38,6 +39,12 @@ export class AuthController {
   @Post("forgot-password")
   async forgotPassword(@Body() forgotPasswordDto: { email: string }) {
     await this.authService.forgotPassword(forgotPasswordDto.email);
+    return { ok: true };
+  }
+
+  @Post("reset-password")
+  async resetPassword(@Body() resetPasswordDto: ResetPasswordDto) {
+    await this.authService.resetPassword(resetPasswordDto);
     return { ok: true };
   }
 }
