@@ -1,7 +1,9 @@
-import { Column, Entity, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { EducationLevel, JobType } from "./enums";
+import { Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { EducationLevel } from "./enums";
 import { TechStack } from "../tech-stacks/tech-stacks.entity";
 import { Student } from "../student/student.entity";
+import { FatecInstitutions } from "../fatec/fatec-institution.entity";
+import { FatecCourses } from "../fatec/fatec-course.entity";
 
 @Entity("curriculums")
 export class Curriculum {
@@ -22,13 +24,24 @@ export class Curriculum {
     position: string;
     start_date: Date;
     end_date?: Date;
-    type: JobType;
     location?: {
       city: string;
       state: string;
     };
     description?: string;
   }[];
+
+  @OneToMany(() => FatecInstitutions, (fatec_institutions) => fatec_institutions.curriculums)
+  fatec_institution: string;
+
+  @OneToMany(() => FatecCourses, (fatec_courses) => fatec_courses.curriculums)
+  fatec_course: string;
+
+  @Column()
+  fatec_cycle: string;
+
+  @Column()
+  fatec_start_date: Date;
 
   @Column({
     type: "simple-json",
@@ -43,6 +56,10 @@ export class Curriculum {
       city: string;
       state: string;
     };
-    description?: string;
   }[];
+
+  @Column({
+    type: "simple-array",
+  })
+  certifications: string[];
 }
