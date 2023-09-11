@@ -6,8 +6,8 @@ import bcrypt from "bcrypt";
 import { AuthMailService } from "./mail/auth.mail.service";
 import { AuthHelper } from "../helpers/auth.helper";
 import ApiError from "@/common/error";
-import { ResetPasswordDto } from "../dtos";
 import { UserCreationService } from "@/modules/user/service/user-creation.service";
+import { ResetPasswordDto } from "../dtos/reset-password.dto";
 @Injectable()
 export class AuthService {
   constructor(

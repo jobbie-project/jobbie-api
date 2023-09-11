@@ -2,8 +2,8 @@ import { Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn
 import { EducationLevel } from "./enums";
 import { TechStack } from "../tech-stacks/tech-stacks.entity";
 import { Student } from "../student/student.entity";
-import { FatecInstitutions } from "../fatec/fatec-institution.entity";
-import { FatecCourses } from "../fatec/fatec-course.entity";
+import { FatecInstitution } from "../fatec/fatec-institution.entity";
+import { FatecCourse } from "../fatec/fatec-course.entity";
 
 @Entity("curriculums")
 export class Curriculum {
@@ -31,14 +31,14 @@ export class Curriculum {
     description?: string;
   }[];
 
-  @OneToMany(() => FatecInstitutions, (fatec_institutions) => fatec_institutions.curriculums)
+  @OneToMany(() => FatecInstitution, (fatec_institutions) => fatec_institutions.curriculums)
   fatec_institution: string;
 
-  @OneToMany(() => FatecCourses, (fatec_courses) => fatec_courses.curriculums)
+  @OneToMany(() => FatecCourse, (fatec_courses) => fatec_courses.curriculums)
   fatec_course: string;
 
   @Column()
-  fatec_cycle: string;
+  fatec_cycle: number;
 
   @Column()
   fatec_start_date: Date;
@@ -48,15 +48,35 @@ export class Curriculum {
   })
   education: {
     institution_name: string;
-    degree: string;
-    level: EducationLevel;
+    course: string;
+    degree: EducationLevel;
     start_date: Date;
-    end_date?: Date;
-    location?: {
+    end_date?: Date | undefined;
+    location: {
       city: string;
       state: string;
     };
   }[];
+
+  @Column({
+    type: "simple-json",
+  })
+  address: { street: string; city: string; state: string; zip_code: string };
+
+  @Column({
+    nullable: true,
+  })
+  github_url?: string;
+
+  @Column({
+    nullable: true,
+  })
+  linkedin_url?: string;
+
+  @Column({
+    nullable: true,
+  })
+  portfolio_url?: string;
 
   @Column({
     type: "simple-array",

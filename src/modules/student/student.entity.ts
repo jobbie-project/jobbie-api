@@ -19,21 +19,6 @@ export class Student {
   @Column({
     nullable: true,
   })
-  github_url?: string;
-
-  @Column({
-    nullable: true,
-  })
-  linkedin_url?: string;
-
-  @Column({
-    nullable: true,
-  })
-  portfolio_url?: string;
-
-  @Column({
-    nullable: true,
-  })
   birth_date?: Date;
 
   @ManyToMany(() => Job)
