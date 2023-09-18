@@ -1,6 +1,9 @@
-import { CreateCurriculumDto } from "@/modules/curriculum/dto/create-curriculum.dto";
+import { FatecEducation } from "@/modules/curriculum/dto/fatec-education.dto";
+import { ProfileAddress } from "@/modules/curriculum/dto/profile-address.dto";
+import { ProfileEducation } from "@/modules/curriculum/dto/profile-education.dto";
+import { ProfilePreviousExperience } from "@/modules/curriculum/dto/profile-previous-experience.dto";
 import { Type } from "class-transformer";
-import { IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator";
 
 export class CreateStudentDto {
   @IsOptional()
@@ -12,7 +15,37 @@ export class CreateStudentDto {
   })
   phone?: string;
 
+  @IsOptional()
+  @IsString({
+    context: {
+      message: `invalid-name`,
+      userMessage: `Nome inválido`,
+    },
+  })
+  name?: string;
+
   @ValidateNested()
-  @Type(() => CreateCurriculumDto)
-  curriculum: CreateCurriculumDto;
+  @Type(() => ProfileEducation)
+  education: ProfileEducation[];
+
+  @ValidateNested()
+  @Type(() => ProfilePreviousExperience)
+  previous_experience: ProfilePreviousExperience[];
+
+  @ValidateNested()
+  @Type(() => ProfileAddress)
+  address: ProfileAddress;
+
+  @ValidateNested()
+  @Type(() => FatecEducation)
+  fatec_education: FatecEducation;
+
+  @IsOptional()
+  @IsArray({
+    context: {
+      message: "invalid-certifications",
+      userMessage: "Certificações inválidas",
+    },
+  })
+  certifications?: string[];
 }

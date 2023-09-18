@@ -12,6 +12,7 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     if (err || !user) {
       throw err || new ApiError("unauthorized", "Não autorizado (jwt inválido)", 401);
     }
+    if (!user.email_validated) throw new ApiError("unauthorized", "Email não validado, confira sua caixa de entrada e de spam", 401);
     return user;
   }
 }

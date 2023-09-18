@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min, ValidateNested } from "class-validator";
+import { IsArray, IsDateString, IsNotEmpty, IsNumber, IsOptional, IsString, Max, Min, ValidateNested } from "class-validator";
 import { ProfileAddress } from "./profile-address.dto";
 import { ProfileEducation } from "./profile-education.dto";
 import { ProfilePreviousExperience } from "./profile-previous-experience.dto";
@@ -80,6 +80,15 @@ export class CreateCurriculumDto {
     }
   )
   fatec_start_date: Date;
+
+  @IsOptional()
+  @IsArray({
+    context: {
+      message: "invalid-certifications",
+      userMessage: "Certificações inválidas",
+    },
+  })
+  certifications?: string[];
 
   // @IsOptional()
   // @IsString({

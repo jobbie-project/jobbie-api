@@ -21,7 +21,7 @@ export class Job {
   @ManyToMany(() => Student, (student) => student.jobs_applied)
   applicants: Student[];
 
-  @ManyToOne(() => Company, (company) => company.jobs_posted)
+  @OneToMany(() => Company, (company) => company.jobs_posted)
   @JoinColumn({ name: "owner_company_id" })
   owner_company: Company;
 

@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { CompanySize } from "./enums";
 import { User } from "../user/user.entity";
 import { Job } from "../job/job.entity";
@@ -34,7 +34,7 @@ export class Company {
   })
   size: CompanySize;
 
-  @OneToMany(() => Job, (job) => job.owner_company)
+  @ManyToOne(() => Job, (job) => job.owner_company)
   jobs_posted: Job[];
 
   @OneToOne(() => User, (user) => user.company)

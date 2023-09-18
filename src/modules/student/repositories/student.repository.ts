@@ -13,4 +13,9 @@ export class StudentRepository {
     const newStudent = await this.studentRepository.save(createStudentPayload);
     return newStudent;
   }
+
+  async update(studentId: string, updateStudentPayload: Partial<Student>): Promise<Student> {
+    const updatedStudent = await this.studentRepository.save({ id: studentId, ...updateStudentPayload });
+    return updatedStudent;
+  }
 }

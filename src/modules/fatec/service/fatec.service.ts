@@ -11,4 +11,12 @@ export class FatecService {
   async getInstitutions() {
     return await this.fatecInstitutionRepository.findAll();
   }
+
+  async getCourseById(id: string) {
+    return await this.fatecCourseRepository.findById(id);
+  }
+
+  async getInstitutionById(id: string) {
+    return await this.fatecInstitutionRepository.findById(id);
+  }
 }

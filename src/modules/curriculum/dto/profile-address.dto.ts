@@ -35,6 +35,12 @@ export class ProfileAddress {
       userMessage: "Estado obrigatório",
     },
   })
+  @IsString({
+    context: {
+      message: "invalid-state",
+      userMessage: "Estado inválido",
+    },
+  })
   state: string;
 
   @IsNotEmpty({

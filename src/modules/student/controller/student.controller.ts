@@ -11,6 +11,7 @@ import ApiError from "@/common/error";
 @Controller("student")
 export class StudentController {
   constructor(private studentCreationService: StudentCreationService) {}
+
   @Post("create")
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async create(@Req() req: Request, @Body() createStudentDto: CreateStudentDto) {

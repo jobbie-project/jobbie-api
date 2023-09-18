@@ -14,6 +14,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     if (!user) {
       throw new ApiError("invalid-credentials", "Credenciais inválidas", 401);
     }
+    if (!user.email_validated) throw new ApiError("unauthorized", "Email não validado, confira sua caixa de entrada e de spam", 401);
     return {
       id: user.id,
       name: user.name,

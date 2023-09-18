@@ -1,6 +1,8 @@
 import { User } from "@/modules/user/user.entity";
-import { CreateStudentDto } from "../dtos/create-student.dto";
+import { Curriculum } from "@/modules/curriculum/curriculum.entity";
 
-export interface CreateStudentPayload extends CreateStudentDto {
+export interface CreateStudentPayload {
   user: User;
+  phone?: string;
+  curriculum: Curriculum;
 }

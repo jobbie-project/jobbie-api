@@ -20,7 +20,7 @@ export class Curriculum {
     type: "simple-json",
   })
   previous_experience: {
-    company_name: string;
+    company_name?: string;
     position: string;
     start_date: Date;
     end_date?: Date;
@@ -32,10 +32,10 @@ export class Curriculum {
   }[];
 
   @OneToMany(() => FatecInstitution, (fatec_institutions) => fatec_institutions.curriculums)
-  fatec_institution: string;
+  fatec_institution: FatecInstitution;
 
   @OneToMany(() => FatecCourse, (fatec_courses) => fatec_courses.curriculums)
-  fatec_course: string;
+  fatec_course: FatecCourse;
 
   @Column()
   fatec_cycle: number;

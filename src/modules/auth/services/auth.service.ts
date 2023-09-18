@@ -31,6 +31,7 @@ export class AuthService {
         email: user.email,
         role: user.role,
         profile_completed: user.profile_completed,
+        email_validated: user.email_validated,
       };
     }
     return null;

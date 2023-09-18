@@ -9,4 +9,8 @@ export class FatecCourseRepository {
   async findAll() {
     return await this.fatecCourse.find();
   }
+
+  async findById(id: string) {
+    return await this.fatecCourse.findOne({ where: { id } });
+  }
 }

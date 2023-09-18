@@ -7,7 +7,7 @@ import { CreateCurriculumDto } from "../dto/create-curriculum.dto";
 @Injectable()
 export class CurriculumRepository {
   constructor(@InjectRepository(Curriculum) private readonly curriculumRepository: Repository<Curriculum>) {}
-  async create(createCurriculumPayload: CreateCurriculumDto): Promise<Curriculum> {
+  async create(createCurriculumPayload: Partial<Curriculum>): Promise<Curriculum> {
     const newCurriculum = await this.curriculumRepository.save(createCurriculumPayload);
     return newCurriculum;
   }
