@@ -11,7 +11,6 @@ export class CurriculumService {
     const fatecCourse = await this.fatecService.getCourseById(createCurriculumDto.fatec_course);
     const fatecInstitution = await this.fatecService.getInstitutionById(createCurriculumDto.fatec_institution);
     const curriculum = await this.curriculumRepository.create({ ...createCurriculumDto, fatec_course: fatecCourse, fatec_institution: fatecInstitution });
-    console.log(curriculum);
     return curriculum;
   }
 }
