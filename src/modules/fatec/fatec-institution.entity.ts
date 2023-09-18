@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from "typeorm";
 import { Curriculum } from "../curriculum/curriculum.entity";
 
 @Entity("fatec_institutions")
@@ -9,6 +9,6 @@ export class FatecInstitution {
   @Column()
   name: string;
 
-  @ManyToOne(() => Curriculum, (curriculum) => curriculum.fatec_institution)
+  @OneToMany(() => Curriculum, (curriculum) => curriculum.fatec_institution)
   curriculums: Curriculum[];
 }

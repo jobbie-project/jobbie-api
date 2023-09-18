@@ -10,7 +10,6 @@ export class CurriculumService {
   async createCurriculum(createCurriculumDto: CreateCurriculumDto) {
     const fatecCourse = await this.fatecService.getCourseById(createCurriculumDto.fatec_course);
     const fatecInstitution = await this.fatecService.getInstitutionById(createCurriculumDto.fatec_institution);
-    console.log(fatecCourse, fatecInstitution);
     const curriculum = await this.curriculumRepository.create({ ...createCurriculumDto, fatec_course: fatecCourse, fatec_institution: fatecInstitution });
     console.log(curriculum);
     return curriculum;

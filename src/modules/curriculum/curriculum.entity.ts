@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EducationLevel } from "./enums";
 import { TechStack } from "../tech-stacks/tech-stacks.entity";
 import { Student } from "../student/student.entity";
@@ -31,10 +31,10 @@ export class Curriculum {
     description?: string;
   }[];
 
-  @OneToMany(() => FatecInstitution, (fatec_institutions) => fatec_institutions.curriculums)
+  @ManyToOne(() => FatecInstitution, (fatec_institutions) => fatec_institutions.curriculums)
   fatec_institution: FatecInstitution;
 
-  @OneToMany(() => FatecCourse, (fatec_courses) => fatec_courses.curriculums)
+  @ManyToOne(() => FatecCourse, (fatec_courses) => fatec_courses.curriculums)
   fatec_course: FatecCourse;
 
   @Column()
