@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Curriculum } from "../curriculum.entity";
-import { CreateCurriculumDto } from "../dto/create-curriculum.dto";
+import { CreateCurriculumDto } from "../dtos/create-curriculum.dto";
 
 @Injectable()
 export class CurriculumRepository {

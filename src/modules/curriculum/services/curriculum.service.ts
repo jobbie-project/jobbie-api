@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
-import { CreateCurriculumDto } from "../dto/create-curriculum.dto";
+import { CreateCurriculumDto } from "../dtos/create-curriculum.dto";
 import { CurriculumRepository } from "../repositories/curriculum.repository";
-import { FatecService } from "@/modules/fatec/service/fatec.service";
+import { FatecService } from "@/modules/fatec/services/fatec.service";
 
 @Injectable()
 export class CurriculumService {

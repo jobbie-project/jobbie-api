@@ -1,6 +1,6 @@
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
 import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
-import { StudentCreationService } from "../service/student-creation.service";
+import { StudentCreationService } from "../services/student-creation.service";
 import { User } from "@/modules/user/user.entity";
 import { Request } from "express";
 import { CreateStudentDto } from "../dtos/create-student.dto";

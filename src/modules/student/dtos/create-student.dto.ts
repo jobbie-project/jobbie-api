@@ -1,7 +1,7 @@
-import { FatecEducation } from "@/modules/curriculum/dto/fatec-education.dto";
-import { ProfileAddress } from "@/modules/curriculum/dto/profile-address.dto";
-import { ProfileEducation } from "@/modules/curriculum/dto/profile-education.dto";
-import { ProfilePreviousExperience } from "@/modules/curriculum/dto/profile-previous-experience.dto";
+import { FatecEducation } from "@/modules/curriculum/dtos/fatec-education.dto";
+import { ProfileAddress } from "@/modules/curriculum/dtos/profile-address.dto";
+import { ProfileEducation } from "@/modules/curriculum/dtos/profile-education.dto";
+import { ProfilePreviousExperience } from "@/modules/curriculum/dtos/profile-previous-experience.dto";
 import { Type } from "class-transformer";
 import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator";
 

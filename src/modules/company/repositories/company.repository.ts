@@ -1,5 +1,5 @@
-import { UserCreationService } from "@/modules/user/service/user-creation.service";
-import { UserQueryService } from "@/modules/user/service/user-query.service";
+import { UserCreationService } from "@/modules/user/services/user-creation.service";
+import { UserQueryService } from "@/modules/user/services/user-query.service";
 import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { Company } from "../company.entity";

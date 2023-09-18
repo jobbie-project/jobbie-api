@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { User } from "@/modules/user/user.entity";
-import { UserQueryService } from "@/modules/user/service/user-query.service";
+import { UserQueryService } from "@/modules/user/services/user-query.service";
 import bcrypt from "bcrypt";
 import { AuthMailService } from "./mail/auth.mail.service";
 import { AuthHelper } from "../helpers/auth.helper";
 import ApiError from "@/common/error";
-import { UserCreationService } from "@/modules/user/service/user-creation.service";
+import { UserCreationService } from "@/modules/user/services/user-creation.service";
 import { ResetPasswordDto } from "../dtos/reset-password.dto";
 @Injectable()
 export class AuthService {

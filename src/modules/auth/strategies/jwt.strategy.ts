@@ -1,4 +1,4 @@
-import { UserQueryService } from "@/modules/user/service/user-query.service";
+import { UserQueryService } from "@/modules/user/services/user-query.service";
 import { User } from "@/modules/user/user.entity";
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";

@@ -5,7 +5,7 @@ import { AuthService } from "../services/auth.service";
 import { AuthGuard } from "@nestjs/passport";
 import { ResendEmailConfirmationDto } from "@/modules/user/dtos/ressend-email-confirmation.dto";
 import { VerifyEmailDto } from "@/modules/user/dtos/verify-email.dto";
-import { UserValidationService } from "@/modules/user/service/user-validation.service";
+import { UserValidationService } from "@/modules/user/services/user-validation.service";
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
 import { ResetPasswordDto } from "../dtos/reset-password.dto";
 

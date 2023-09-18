@@ -1,5 +1,5 @@
 import { Controller, Get } from "@nestjs/common";
-import { FatecService } from "../service/fatec.service";
+import { FatecService } from "../services/fatec.service";
 
 @Controller("fatec")
 export class FatecController {

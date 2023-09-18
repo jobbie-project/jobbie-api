@@ -2,15 +2,15 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from 
 import { CreateUserDto } from "@/modules/user/dtos/create-user.dto";
 import { Request } from "express";
 import { UpdateUserDto } from "@/modules/user/dtos/update-user.dto";
-import { UserQueryService } from "@/modules/user/service/user-query.service";
-import { UserCreationService } from "@/modules/user/service/user-creation.service";
+import { UserQueryService } from "@/modules/user/services/user-query.service";
+import { UserCreationService } from "@/modules/user/services/user-creation.service";
 import { RoleGuard } from "@/common/guards/role.guard";
 import { UserRole } from "@/modules/user/enums";
 import { User } from "@/modules/user/user.entity";
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
 import { VerifyEmailDto } from "../dtos/verify-email.dto";
 import { ResendEmailConfirmationDto } from "../dtos/ressend-email-confirmation.dto";
-import { UserValidationService } from "../service/user-validation.service";
+import { UserValidationService } from "../services/user-validation.service";
 
 @Controller("user")
 export class UserController {
