@@ -6,7 +6,6 @@ import { UserQueryService } from "@/modules/user/services/user-query.service";
 import { UserCreationService } from "@/modules/user/services/user-creation.service";
 import { CurriculumService } from "@/modules/curriculum/services/curriculum.service";
 import { Student } from "../student.entity";
-import { CreateCurriculumDto } from "@/modules/curriculum/dtos/create-curriculum.dto";
 
 @Injectable()
 export class StudentCreationService {
