@@ -1,6 +1,8 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Student } from "../student/student.entity";
 import { Company } from "../company/company.entity";
+import { ContractType, JobTime, JobType } from "@/common/enums";
+import { User } from "../user/user.entity";
 
 @Entity("jobs")
 export class Job {
@@ -11,19 +13,39 @@ export class Job {
   description: string;
 
   @Column()
-  title: string;
+  position: string;
 
-  @Column({
-    nullable: true,
-  })
-  salary?: number;
+  @Column({ type: "float" })
+  salary: number;
+
+  @Column()
+  owner_name: string;
+
+  @Column()
+  owner_email: string;
+
+  @Column({ nullable: true })
+  num_positions: string;
+
+  @Column({ type: "enum", enum: JobType })
+  type: JobType;
+
+  @Column({ type: "enum", enum: ContractType })
+  contract_type: ContractType;
+
+  @Column({ type: "enum", enum: JobTime })
+  job_time: JobTime;
 
   @ManyToMany(() => Student, (student) => student.jobs_applied)
   applicants: Student[];
 
-  @OneToMany(() => Company, (company) => company.jobs_posted)
+  @ManyToOne(() => Company, (company) => company.jobs_posted)
   @JoinColumn({ name: "owner_company_id" })
   owner_company: Company;
+
+  @ManyToOne(() => User, (user) => user.jobs_posted)
+  @JoinColumn({ name: "owner_admin_id" })
+  owner_admin: User;
 
   @CreateDateColumn()
   created_at: Date;
@@ -32,5 +54,5 @@ export class Job {
   updated_at: Date;
 
   @DeleteDateColumn()
-  deleted_At: Date;
+  deleted_at: Date;
 }

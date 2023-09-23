@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserRole } from "./enums";
 import { Student } from "../student/student.entity";
 import { Company } from "../company/company.entity";
+import { Job } from "../job/job.entity";
 @Entity("users")
 export class User {
   @PrimaryGeneratedColumn()
@@ -45,6 +46,9 @@ export class User {
   @JoinColumn({ name: "company_id" })
   company?: Company;
 
+  @OneToMany(() => Job, (job) => job.owner_admin)
+  jobs_posted: Job[];
+
   @CreateDateColumn()
   created_at: Date;
 
@@ -52,5 +56,5 @@ export class User {
   updated_at: Date;
 
   @DeleteDateColumn()
-  deleted_At: Date;
+  deleted_at: Date;
 }

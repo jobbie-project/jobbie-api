@@ -31,5 +31,5 @@ export class TechStack {
   updated_at: Date;
 
   @DeleteDateColumn()
-  deleted_At: Date;
+  deleted_at: Date;
 }
