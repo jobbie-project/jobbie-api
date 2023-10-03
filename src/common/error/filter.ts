@@ -11,22 +11,20 @@ export class ApiErrorFilter implements ExceptionFilter {
       if (exception.userMessage) {
         return response.status(exception.statusCode ?? 500).send({
           ok: false,
-          errors: [{ message: exception.message, userMessage: exception.userMessage }],
+          error: { message: exception.message, userMessage: exception.userMessage },
         });
       } else if (exception.message) {
         return response.status(exception.statusCode ?? 500).send({
           ok: false,
-          errors: [
-            {
-              message: exception.message,
-              userMessage: "Erro desconhecido, entre em contato com o suporte.",
-            },
-          ],
+          error: {
+            message: exception.message,
+            userMessage: "Erro desconhecido, entre em contato com o suporte.",
+          },
         });
       } else {
         return response.status(exception.statusCode ?? 500).send({
           ok: false,
-          errors: [{ message: "unknown-error", userMessage: "Erro desconhecido" }],
+          error: { message: "unknown-error", userMessage: "Erro desconhecido" },
         });
       }
     }

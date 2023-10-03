@@ -22,8 +22,8 @@ export class StudentCreationService {
     const user = await this.userQueryService.findOne({ key: "id", value: requestingUser.id });
     user.student = newStudent;
     await this.userCreationService.update(user.id, { ...user, profile_completed: true, name: createStudentDto.name ?? user.name });
-    await this.update(newStudent.id, { curriculum: newCurriculum });
-    return newStudent;
+    const finalStudent = await this.update(newStudent.id, { curriculum: newCurriculum });
+    return finalStudent;
   }
 
   async update(id: string, updateStudentPayload: Partial<Student>) {

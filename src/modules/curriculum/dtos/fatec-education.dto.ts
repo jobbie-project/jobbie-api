@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsNumberString, IsDateString } from "class-validator";
+import { IsNotEmpty, IsString, IsNumberString, IsDateString, isNumber, IsNumber } from "class-validator";
 
 export class FatecEducation {
   @IsNotEmpty({
@@ -35,7 +35,7 @@ export class FatecEducation {
       userMessage: "Ciclo da Fatec obrigatório",
     },
   })
-  @IsNumberString(
+  @IsNumber(
     {},
     {
       context: {

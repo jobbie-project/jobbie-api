@@ -4,7 +4,6 @@ export class AppValidationPipe extends ValidationPipe {
   constructor() {
     super({
       whitelist: true,
-      forbidNonWhitelisted: true,
       stopAtFirstError: true,
       exceptionFactory: (rawErrors) => {
         console.dir(rawErrors, { depth: null });
