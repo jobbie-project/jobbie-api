@@ -23,7 +23,7 @@ export class Job {
   @Column({ type: "float" })
   salary: number;
 
-  @Column()
+  @Column({ nullable: true })
   owner_name: string;
 
   @Column()

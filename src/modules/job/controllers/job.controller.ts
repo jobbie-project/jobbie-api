@@ -28,10 +28,10 @@ export class JobController {
     return { ok: true, total, jobs };
   }
 
-  @Get(":id")
+  @Get(":code")
   @UseGuards(JwtAuthGuard)
-  async findJobById(@Req() req: Request, @Param("id") id: string) {
-    const job = await this.jobQueryService.getJobById(id);
+  async findJobById(@Req() req: Request, @Param("code") code: string) {
+    const job = await this.jobQueryService.getJobByCode(code);
     return { ok: true, job };
   }
 }
