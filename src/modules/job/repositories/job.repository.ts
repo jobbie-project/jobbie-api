@@ -37,4 +37,12 @@ export class JobRepository {
   async getJobById(id: string) {
     return await this.jobRepository.findOne({ where: { id } });
   }
+
+  async findByCode(code: string): Promise<Job> {
+    const job = await this.jobRepository.findOne({
+      where: { code },
+    });
+
+    return job;
+  }
 }

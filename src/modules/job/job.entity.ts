@@ -1,13 +1,18 @@
 import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Student } from "../student/student.entity";
 import { Company } from "../company/company.entity";
-import { ContractType, JobTime, JobType } from "@/common/enums";
+import { ContractType, JobStatus, JobTime, JobType } from "@/common/enums";
 import { User } from "../user/user.entity";
 
 @Entity("jobs")
 export class Job {
   @PrimaryGeneratedColumn()
   id: string;
+
+  @Column({
+    unique: true,
+  })
+  code: string;
 
   @Column()
   description: string;
@@ -22,7 +27,17 @@ export class Job {
   owner_name: string;
 
   @Column()
+  company_name: string;
+
+  @Column()
   owner_email: string;
+
+  @Column({
+    type: "enum",
+    enum: JobStatus,
+    default: JobStatus.OPEN,
+  })
+  status: JobStatus;
 
   @Column({ nullable: true })
   num_positions: string;

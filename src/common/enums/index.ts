@@ -17,3 +17,9 @@ export enum JobTime {
   PART_TIME = "part_time",
   TO_MATCH = "to_match",
 }
+
+export enum JobStatus {
+  OPEN = "open",
+  INACTIVE = "inactive",
+  CLOSED = "closed",
+}

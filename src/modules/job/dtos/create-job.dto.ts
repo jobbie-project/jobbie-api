@@ -1,5 +1,7 @@
 import { ContractType, JobTime, JobType } from "@/common/enums";
-import { IsEnum, IsNotEmpty, IsNumberString, IsOptional, IsString } from "class-validator";
+import { LocationDto } from "@/modules/curriculum/dtos/location.dto";
+import { Type } from "class-transformer";
+import { IsEnum, IsNotEmpty, IsNumber, IsNumberString, IsOptional, IsString, ValidateIf, ValidateNested } from "class-validator";
 
 export class CreateJobDto {
   @IsNotEmpty({
@@ -32,11 +34,25 @@ export class CreateJobDto {
 
   @IsNotEmpty({
     context: {
+      message: "missing-company_name",
+      userMessage: "Nome da empresa obrigatório",
+    },
+  })
+  @IsString({
+    context: {
+      message: "invalid-company_name",
+      userMessage: "Nome da empresa inválido",
+    },
+  })
+  company_name: string;
+
+  @IsNotEmpty({
+    context: {
       message: "missing-salary",
       userMessage: "Salário obrigatório",
     },
   })
-  @IsNumberString(
+  @IsNumber(
     {},
     {
       context: {
@@ -45,7 +61,7 @@ export class CreateJobDto {
       },
     }
   )
-  salary: string;
+  salary: number;
 
   @IsOptional()
   @IsNumberString(
@@ -113,4 +129,9 @@ export class CreateJobDto {
   })
   @IsEnum(Object.values(JobTime))
   job_time: JobTime;
+
+  @ValidateIf((o) => o.type === JobType.FACE_TO_FACE)
+  @ValidateNested()
+  @Type(() => LocationDto)
+  location: LocationDto;
 }
