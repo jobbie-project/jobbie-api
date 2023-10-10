@@ -7,6 +7,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   Req,
@@ -49,6 +50,22 @@ export class JobController {
   async findJobById(@Req() req: Request, @Param("code") code: string) {
     const job = await this.jobQueryService.getJobByCode(code);
     return { ok: true, job };
+  }
+
+  @Patch(":code")
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
+  async updateJob(
+    @Req() req: Request,
+    @Param("code") code: string,
+    @Body() createJobDto: CreateJobDto
+  ) {
+    const requestingUser = req.user as User;
+    const job = await this.jobQueryService.getJobByCode(code);
+    const updatedJob = await this.jobCreationService.updateJob(
+      job,
+      createJobDto
+    );
+    return { ok: true, job: updatedJob };
   }
 
   @Delete(":code")

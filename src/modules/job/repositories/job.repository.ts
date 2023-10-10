@@ -55,6 +55,11 @@ export class JobRepository {
     return job;
   }
 
+  async updateJob(job: Job, updateJobDto: Partial<Job>) {
+    await this.jobRepository.update(job.id, updateJobDto);
+    return this.getJobById(job.id);
+  }
+
   async deleteJob(job: Job) {
     await this.jobRepository.remove(job);
   }

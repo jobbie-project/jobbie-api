@@ -28,6 +28,11 @@ export class JobCreationService {
     return job;
   }
 
+  async updateJob(job: Job, updateJobDto: Partial<Job>) {
+    await this.jobRepository.updateJob(job, updateJobDto);
+    return this.jobRepository.getJobById(job.id);
+  }
+
   async deleteJob(requestingUser: User, job: Job) {
     if (
       requestingUser.role === UserRole.COMPANY &&
