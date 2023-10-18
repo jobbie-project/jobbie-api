@@ -9,10 +9,7 @@ import ApiError from "@/common/error";
 
 @Injectable()
 export class JobCreationService {
-  constructor(
-    private readonly jobRepository: JobRepository,
-    private readonly jobHelper: JobHelper
-  ) {}
+  constructor(private readonly jobRepository: JobRepository, private readonly jobHelper: JobHelper) {}
 
   async createJob(requestingUser: User, createJobDto: CreateJobDto) {
     const code = await this.jobHelper.generateNewCode();
@@ -21,28 +18,20 @@ export class JobCreationService {
       salary: +createJobDto.salary,
       code,
     };
-    requestingUser.role === UserRole.COMPANY
-      ? (createJobPayload.owner_company = requestingUser.company)
-      : (createJobPayload.owner_admin = requestingUser);
+    requestingUser.role === UserRole.COMPANY ? (createJobPayload.owner_company = requestingUser.company) : (createJobPayload.owner_admin = requestingUser);
     const job = await this.jobRepository.createJob(createJobPayload);
     return job;
   }
 
   async updateJob(job: Job, updateJobDto: Partial<Job>) {
-    await this.jobRepository.updateJob(job, updateJobDto);
-    return this.jobRepository.getJobById(job.id);
+    const data = await this.jobRepository.updateJob(job, updateJobDto);
+    console.log(data, "data");
+    return data;
   }
 
   async deleteJob(requestingUser: User, job: Job) {
-    if (
-      requestingUser.role === UserRole.COMPANY &&
-      job.owner_company.id !== requestingUser.company.id
-    ) {
-      throw new ApiError(
-        "Ação não permitida",
-        "Você não é dono desta vaga",
-        403
-      );
+    if (requestingUser.role === UserRole.COMPANY && job.owner_company.id !== requestingUser.company.id) {
+      throw new ApiError("Ação não permitida", "Você não é dono desta vaga", 403);
     }
     await this.jobRepository.deleteJob(job);
   }

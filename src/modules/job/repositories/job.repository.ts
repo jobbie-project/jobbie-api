@@ -6,9 +6,7 @@ import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
 
 @Injectable()
 export class JobRepository {
-  constructor(
-    @InjectRepository(Job) private readonly jobRepository: Repository<Job>
-  ) {}
+  constructor(@InjectRepository(Job) private readonly jobRepository: Repository<Job>) {}
 
   async createJob(createJobDto: Partial<Job>) {
     const job = await this.jobRepository.save(createJobDto);
@@ -24,8 +22,7 @@ export class JobRepository {
       qb.andWhere("jobs.contract_type = :contract_type", {
         contract_type: options.contract_type,
       });
-    options.job_time &&
-      qb.andWhere("jobs.job_time = :job_time", { job_time: options.job_time });
+    options.job_time && qb.andWhere("jobs.job_time = :job_time", { job_time: options.job_time });
     options.position &&
       qb.andWhere("jobs.position ILIKE :position", {
         position: `%${options.position}%`,
@@ -56,8 +53,12 @@ export class JobRepository {
   }
 
   async updateJob(job: Job, updateJobDto: Partial<Job>) {
-    await this.jobRepository.update(job.id, updateJobDto);
-    return this.getJobById(job.id);
+    try {
+      const data = await this.jobRepository.update(job.id, updateJobDto);
+      return this.getJobById(job.id);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async deleteJob(job: Job) {

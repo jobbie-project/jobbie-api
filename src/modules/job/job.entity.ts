@@ -39,6 +39,15 @@ export class Job {
   })
   status: JobStatus;
 
+  @Column({
+    type: "simple-json",
+    nullable: true,
+  })
+  location: {
+    city: string;
+    state: string;
+  };
+
   @Column({ nullable: true })
   num_positions: string;
 

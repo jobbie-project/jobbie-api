@@ -52,7 +52,7 @@ export class CreateJobDto {
       userMessage: "Salário obrigatório",
     },
   })
-  @IsNumber(
+  @IsNumberString(
     {},
     {
       context: {
