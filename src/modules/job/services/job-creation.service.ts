@@ -11,6 +11,10 @@ import ApiError from "@/common/error";
 export class JobCreationService {
   constructor(private readonly jobRepository: JobRepository, private readonly jobHelper: JobHelper) {}
 
+  async saveJob(job: Job) {
+    return await this.jobRepository.save(job);
+  }
+
   async createJob(requestingUser: User, createJobDto: CreateJobDto) {
     const code = await this.jobHelper.generateNewCode();
     const createJobPayload: Partial<Job> = {

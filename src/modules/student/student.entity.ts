@@ -9,6 +9,7 @@ export class Student {
   id: string;
 
   @OneToOne(() => User, (user) => user.student)
+  @JoinColumn({ name: "user_id" })
   user: User;
 
   @Column({
@@ -21,12 +22,7 @@ export class Student {
   })
   birth_date?: Date;
 
-  @ManyToMany(() => Job)
-  @JoinTable({
-    name: "jobs_applicants",
-    joinColumns: [{ name: "student_id" }],
-    inverseJoinColumns: [{ name: "job_id" }],
-  })
+  @ManyToMany(() => Job, (job) => job.applicants)
   jobs_applied: Job[];
 
   @OneToOne(() => Curriculum, (curriculum) => curriculum.student)

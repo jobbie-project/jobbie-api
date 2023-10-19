@@ -8,10 +8,15 @@ import { JobCreationService } from "../services/job-creation.service";
 import { User } from "@/modules/user/user.entity";
 import { JobQueryService } from "../services/job-query.service";
 import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
+import { JobApplicationService } from "../services/job-application.service";
 
 @Controller("job")
 export class JobController {
-  constructor(private readonly jobCreationService: JobCreationService, private readonly jobQueryService: JobQueryService) {}
+  constructor(
+    private readonly jobCreationService: JobCreationService,
+    private readonly jobQueryService: JobQueryService,
+    private readonly jobApplicantService: JobApplicationService
+  ) {}
 
   @Post("create")
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
@@ -50,5 +55,21 @@ export class JobController {
     const job = await this.jobQueryService.getJobByCode(code);
     await this.jobCreationService.deleteJob(requestingUser, job);
     return { ok: true };
+  }
+
+  @Post("/apply/:code")
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
+  async applyJob(@Req() req: Request, @Param("code") code: string) {
+    const requestingUser = req.user as User;
+    const job = await this.jobQueryService.getJobByCode(code);
+    const updatedJob = await this.jobApplicantService.applyJob(requestingUser, job);
+    return { ok: true, job: updatedJob };
+  }
+
+  @Get("/applicants/:code")
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
+  async getApplicants(@Req() req: Request, @Param("code") code: string) {
+    const job = await this.jobQueryService.getJobByCode(code);
+    return { ok: true, applicants: job.applicants };
   }
 }

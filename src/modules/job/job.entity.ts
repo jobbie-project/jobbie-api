@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Student } from "../student/student.entity";
 import { Company } from "../company/company.entity";
 import { ContractType, JobStatus, JobTime, JobType } from "@/common/enums";
@@ -61,6 +61,11 @@ export class Job {
   job_time: JobTime;
 
   @ManyToMany(() => Student, (student) => student.jobs_applied)
+  @JoinTable({
+    name: "jobs_applicants",
+    joinColumns: [{ name: "job_id" }], // Corrected to "job_id"
+    inverseJoinColumns: [{ name: "student_id" }],
+  })
   applicants: Student[];
 
   @ManyToOne(() => Company, (company) => company.jobs_posted)

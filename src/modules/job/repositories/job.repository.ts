@@ -8,6 +8,10 @@ import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
 export class JobRepository {
   constructor(@InjectRepository(Job) private readonly jobRepository: Repository<Job>) {}
 
+  async save(job: Job) {
+    return await this.jobRepository.save(job);
+  }
+
   async createJob(createJobDto: Partial<Job>) {
     const job = await this.jobRepository.save(createJobDto);
     await this.jobRepository.save(job);
@@ -47,14 +51,14 @@ export class JobRepository {
   async getJobByCode(code: string): Promise<Job> {
     const job = await this.jobRepository.findOne({
       where: { code },
+      relations: ["applicants", "applicants.user"],
     });
-
     return job;
   }
 
   async updateJob(job: Job, updateJobDto: Partial<Job>) {
     try {
-      const data = await this.jobRepository.update(job.id, updateJobDto);
+      await this.jobRepository.update(job.id, updateJobDto);
       return this.getJobById(job.id);
     } catch (error) {
       console.log(error);
