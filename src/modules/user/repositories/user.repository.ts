@@ -26,6 +26,12 @@ export class UserRepository {
         qb.leftJoinAndSelect(`user.${relation}`, relation);
       });
     }
+    if (options.withStudentAndCurriculum) {
+      qb.leftJoinAndSelect("user.student", "student");
+      qb.leftJoinAndSelect("student.curriculum", "curriculum");
+      qb.leftJoinAndSelect("curriculum.fatec_institution", "fatec_institution");
+      qb.leftJoinAndSelect("curriculum.fatec_course", "fatec_course");
+    }
     qb.where(`user.${options.key} = :value`, { value: options.value });
     const user = await qb.getOne();
     return user;

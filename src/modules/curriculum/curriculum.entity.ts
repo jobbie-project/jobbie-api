@@ -20,7 +20,7 @@ export class Curriculum {
     type: "simple-json",
   })
   previous_experience: {
-    company_name?: string;
+    company_name: string;
     position: string;
     start_date: Date;
     end_date?: Date;

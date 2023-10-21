@@ -13,4 +13,19 @@ export class CurriculumService {
     const curriculum = await this.curriculumRepository.create({ ...createCurriculumDto, fatec_course: fatecCourse, fatec_institution: fatecInstitution });
     return curriculum;
   }
+
+  async update(id: string, updateCurriculumDto: CreateCurriculumDto) {
+    const fatecCourse = await this.fatecService.getCourseById(updateCurriculumDto.fatec_course);
+    const fatecInstitution = await this.fatecService.getInstitutionById(updateCurriculumDto.fatec_institution);
+    const curriculum = await this.curriculumRepository.update(id, { ...updateCurriculumDto, fatec_course: fatecCourse, fatec_institution: fatecInstitution });
+    return curriculum;
+  }
+
+  async getCurriculumByStudentId(studentId: string) {
+    const curriculum = await this.curriculumRepository.findOne({
+      key: "student_id",
+      value: studentId,
+    });
+    return curriculum;
+  }
 }

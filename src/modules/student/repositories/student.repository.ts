@@ -5,6 +5,8 @@ import { Student } from "../student.entity";
 import { CreateStudentPayload } from "../interfaces/create-student.payload";
 import { UserQueryService } from "@/modules/user/services/user-query.service";
 import { UserCreationService } from "@/modules/user/services/user-creation.service";
+import { Curriculum } from "@/modules/curriculum/curriculum.entity";
+import { UpdateStudentPayload } from "../interfaces/update-student.payload";
 
 @Injectable()
 export class StudentRepository {
@@ -14,7 +16,12 @@ export class StudentRepository {
     return newStudent;
   }
 
-  async update(studentId: string, updateStudentPayload: Partial<Student>): Promise<Student> {
+  async addCurriculum(studentId: string, curriculum: Curriculum): Promise<Student> {
+    const updatedStudent = await this.studentRepository.save({ id: studentId, curriculum: curriculum });
+    return updatedStudent;
+  }
+
+  async update(studentId: string, updateStudentPayload: Partial<UpdateStudentPayload>): Promise<Student> {
     const updatedStudent = await this.studentRepository.save({ id: studentId, ...updateStudentPayload });
     return updatedStudent;
   }

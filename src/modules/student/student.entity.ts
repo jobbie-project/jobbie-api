@@ -25,6 +25,9 @@ export class Student {
   @ManyToMany(() => Job, (job) => job.applicants)
   jobs_applied: Job[];
 
+  @Column()
+  curriculum_id: string;
+
   @OneToOne(() => Curriculum, (curriculum) => curriculum.student)
   @JoinColumn({ name: "curriculum_id" })
   curriculum: Curriculum;

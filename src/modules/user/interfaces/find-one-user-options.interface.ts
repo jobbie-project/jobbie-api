@@ -3,4 +3,5 @@ export interface FindOneUserOptions {
   value: string;
   withPasswordHash?: boolean;
   relations?: string[];
+  withStudentAndCurriculum?: boolean;
 }

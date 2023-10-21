@@ -3,14 +3,19 @@ import { LocationDto } from "./location.dto";
 import { Type } from "class-transformer";
 
 export class ProfilePreviousExperience {
-  @IsOptional()
+  @IsNotEmpty({
+    context: {
+      message: "missing-company-name",
+      userMessage: "Nome da empresa obrigatório",
+    },
+  })
   @IsString({
     context: {
       message: "invalid-company-name",
       userMessage: "Nome da empresa inválido",
     },
   })
-  company_name?: string;
+  company_name: string;
 
   @IsNotEmpty({
     context: {
