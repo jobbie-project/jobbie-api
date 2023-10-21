@@ -28,7 +28,7 @@ export class StudentController {
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async update(@Req() req: Request, @Body() createStudentDto: CreateStudentDto) {
     const user = req.user as User;
-    const student = await this.studentCreationService.update(user.student.id, { curriculumId: user.student.curriculum_id, ...createStudentDto });
+    const student = await this.studentCreationService.update(user, { curriculumId: user.student.curriculum_id, ...createStudentDto });
     return { ok: true, student };
   }
 }
