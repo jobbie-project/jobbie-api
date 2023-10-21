@@ -16,7 +16,7 @@ export class JobHelper {
   }
 
   async findCode(code: string): Promise<boolean> {
-    const codeAlreadyUsed = await this.jobRepository.getJobByCode(code);
+    const codeAlreadyUsed = await this.jobRepository.getJobDataByCode(code);
 
     return !!codeAlreadyUsed;
   }

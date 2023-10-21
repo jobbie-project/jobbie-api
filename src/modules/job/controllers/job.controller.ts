@@ -35,15 +35,15 @@ export class JobController {
 
   @Get(":code")
   @UseGuards(JwtAuthGuard)
-  async findJobById(@Req() req: Request, @Param("code") code: string) {
-    const job = await this.jobQueryService.getJobByCode(code);
+  async findJobByCode(@Req() req: Request, @Param("code") code: string) {
+    const { job } = await this.jobQueryService.getJobDataByCode(code);
     return { ok: true, job };
   }
 
   @Patch(":code")
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
   async updateJob(@Req() req: Request, @Param("code") code: string, @Body() createJobDto: CreateJobDto) {
-    const job = await this.jobQueryService.getJobByCode(code);
+    const { job } = await this.jobQueryService.getJobDataByCode(code);
     const updatedJob = await this.jobCreationService.updateJob(job, createJobDto);
     return { ok: true, job: updatedJob };
   }
@@ -52,7 +52,7 @@ export class JobController {
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
   async deleteJob(@Req() req: Request, @Param("code") code: string) {
     const requestingUser = req.user as User;
-    const job = await this.jobQueryService.getJobByCode(code);
+    const { job } = await this.jobQueryService.getJobDataByCode(code);
     await this.jobCreationService.deleteJob(requestingUser, job);
     return { ok: true };
   }
@@ -61,15 +61,16 @@ export class JobController {
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async applyJob(@Req() req: Request, @Param("code") code: string) {
     const requestingUser = req.user as User;
-    const job = await this.jobQueryService.getJobByCode(code);
+    const { job } = await this.jobQueryService.getJobDataByCode(code, true);
     const updatedJob = await this.jobApplicantService.applyJob(requestingUser, job);
+    delete updatedJob.applicants;
     return { ok: true, job: updatedJob };
   }
 
   @Get("/applicants/:code")
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
   async getApplicants(@Req() req: Request, @Param("code") code: string) {
-    const job = await this.jobQueryService.getJobByCode(code);
+    const { job } = await this.jobQueryService.getJobDataByCode(code, true);
     return { ok: true, applicants: job.applicants };
   }
 }

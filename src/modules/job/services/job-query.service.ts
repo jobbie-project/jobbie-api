@@ -15,7 +15,7 @@ export class JobQueryService {
     return await this.jobRepository.getJobById(id);
   }
 
-  async getJobByCode(code: string) {
-    return await this.jobRepository.getJobByCode(code);
+  async getJobDataByCode(code: string, withApplicants?: boolean) {
+    return await this.jobRepository.getJobDataByCode(code, withApplicants);
   }
 }

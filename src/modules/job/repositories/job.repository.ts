@@ -22,6 +22,7 @@ export class JobRepository {
     const { page = 1, per_page = 10 } = options;
     const qb = this.jobRepository.createQueryBuilder("jobs");
 
+    qb.innerJoinAndSelect("jobs.applicants", "applicants");
     options.contract_type &&
       qb.andWhere("jobs.contract_type = :contract_type", {
         contract_type: options.contract_type,
@@ -48,12 +49,15 @@ export class JobRepository {
     return await this.jobRepository.findOne({ where: { id } });
   }
 
-  async getJobByCode(code: string): Promise<Job> {
-    const job = await this.jobRepository.findOne({
-      where: { code },
-      relations: ["applicants", "applicants.user"],
-    });
-    return job;
+  async getJobDataByCode(code: string, withApplicants?: boolean) {
+    const qb = this.jobRepository.createQueryBuilder("jobs");
+    qb.where("jobs.code = :code", { code });
+    if (withApplicants) {
+      qb.leftJoinAndSelect("jobs.applicants", "applicants");
+      qb.leftJoinAndSelect("applicants.user", "user");
+    }
+    const job = await qb.getOne();
+    return { job, totalApllicants: job.applicants?.length };
   }
 
   async updateJob(job: Job, updateJobDto: Partial<Job>) {

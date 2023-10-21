@@ -9,7 +9,8 @@ export class JobApplicationService {
   constructor(private readonly jobCreationService: JobCreationService) {}
 
   async applyJob(requestingUser: User, job: Job) {
-    job.applicants.push(requestingUser.student);
-    return await this.jobCreationService.saveJob(job);
+    const initialApplicants = [...(job.applicants ?? [])];
+    initialApplicants.push(requestingUser.student);
+    return await this.jobCreationService.saveJob({ ...job, applicants: initialApplicants });
   }
 }
