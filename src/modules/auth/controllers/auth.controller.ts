@@ -3,7 +3,7 @@ import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 import { Request } from "express";
 import { AuthService } from "../services/auth.service";
 import { AuthGuard } from "@nestjs/passport";
-import { ResendEmailConfirmationDto } from "@/modules/user/dtos/ressend-email-confirmation.dto";
+import { ResendEmailConfirmationDto } from "@/modules/user/dtos/resend-email-confirmation.dto";
 import { VerifyEmailDto } from "@/modules/user/dtos/verify-email.dto";
 import { UserValidationService } from "@/modules/user/services/user-validation.service";
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
@@ -11,7 +11,10 @@ import { ResetPasswordDto } from "../dtos/reset-password.dto";
 
 @Controller("auth")
 export class AuthController {
-  constructor(private authService: AuthService, private userValidationService: UserValidationService) {}
+  constructor(
+    private authService: AuthService,
+    private userValidationService: UserValidationService
+  ) {}
   @Post("authenticate")
   @UseGuards(AuthGuard("local"))
   async authenticate(@Req() req: Request) {
@@ -20,8 +23,12 @@ export class AuthController {
   }
 
   @Post("resend-email-confirmation")
-  async resendConfirmationEmail(@Body() resendEmailConfirmationDto: ResendEmailConfirmationDto) {
-    await this.userValidationService.resendConfirmationEmail(resendEmailConfirmationDto.email);
+  async resendConfirmationEmail(
+    @Body() resendEmailConfirmationDto: ResendEmailConfirmationDto
+  ) {
+    await this.userValidationService.resendConfirmationEmail(
+      resendEmailConfirmationDto.email
+    );
     return { ok: true, email: resendEmailConfirmationDto.email };
   }
 
