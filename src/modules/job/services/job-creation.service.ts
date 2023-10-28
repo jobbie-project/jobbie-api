@@ -6,6 +6,7 @@ import { UserRole } from "@/modules/user/enums";
 import { Job } from "../job.entity";
 import { JobHelper } from "../helpers/job.helper";
 import ApiError from "@/common/error";
+import { CreateJobPayload } from "../interfaces/create-job.payload";
 
 @Injectable()
 export class JobCreationService {
@@ -17,7 +18,7 @@ export class JobCreationService {
 
   async createJob(requestingUser: User, createJobDto: CreateJobDto) {
     const code = await this.jobHelper.generateNewCode();
-    const createJobPayload: Partial<Job> = {
+    const createJobPayload: CreateJobPayload = {
       ...createJobDto,
       salary: +createJobDto.salary,
       code,
@@ -29,7 +30,6 @@ export class JobCreationService {
 
   async updateJob(job: Job, updateJobDto: Partial<Job>) {
     const data = await this.jobRepository.updateJob(job, updateJobDto);
-    console.log(data, "data");
     return data;
   }
 

@@ -23,3 +23,10 @@ export enum JobStatus {
   INACTIVE = "inactive",
   CLOSED = "closed",
 }
+
+export enum JobCourseTag {
+  ADS = "Análise e Desenvolvimento de Sistemas",
+  SBM = "Sistemas Biomédicos",
+  GNI = "Gestão de Negócios e Inovação",
+  RH = "Recursos Humanos",
+}

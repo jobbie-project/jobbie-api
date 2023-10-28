@@ -1,8 +1,21 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { Student } from "../student/student.entity";
 import { Company } from "../company/company.entity";
-import { ContractType, JobStatus, JobTime, JobType } from "@/common/enums";
+import { ContractType, JobCourseTag, JobStatus, JobTime, JobType } from "@/common/enums";
 import { User } from "../user/user.entity";
+import { JobApplicant } from "../job_applicants/job-applicants.entity";
 
 @Entity("jobs")
 export class Job {
@@ -60,13 +73,19 @@ export class Job {
   @Column({ type: "enum", enum: JobTime })
   job_time: JobTime;
 
-  @ManyToMany(() => Student, (student) => student.jobs_applied)
-  @JoinTable({
-    name: "jobs_applicants",
-    joinColumns: [{ name: "job_id" }], // Corrected to "job_id"
-    inverseJoinColumns: [{ name: "student_id" }],
+  @Column({
+    type: "enum",
+    enum: JobCourseTag,
   })
-  applicants: Student[];
+  job_tag: JobCourseTag;
+
+  @Column({
+    type: "boolean",
+  })
+  has_sorting: boolean;
+
+  @OneToMany(() => JobApplicant, (jobApplicant) => jobApplicant.job)
+  applicants: JobApplicant[];
 
   @ManyToOne(() => Company, (company) => company.jobs_posted)
   @JoinColumn({ name: "owner_company_id" })

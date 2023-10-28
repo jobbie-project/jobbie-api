@@ -7,10 +7,12 @@ import { JobRepository } from "./repositories/job.repository";
 import { JobQueryService } from "./services/job-query.service";
 import { JobHelper } from "./helpers/job.helper";
 import { JobApplicationService } from "./services/job-application.service";
+import { JobMailService } from "./services/mail/job-mail.service";
+import { JobApplicantsModule } from "../job_applicants/job-applicants.module";
 
 @Module({
   controllers: [JobController],
-  imports: [TypeOrmModule.forFeature([Job])],
-  providers: [JobCreationService, JobQueryService, JobRepository, JobHelper, JobApplicationService],
+  imports: [TypeOrmModule.forFeature([Job]), JobApplicantsModule],
+  providers: [JobCreationService, JobQueryService, JobRepository, JobHelper, JobApplicationService, JobMailService],
 })
 export class JobModule {}

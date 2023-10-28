@@ -1,7 +1,20 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
 import { User } from "../user/user.entity";
 import { Job } from "../job/job.entity";
 import { Curriculum } from "../curriculum/curriculum.entity";
+import { JobApplicant } from "../job_applicants/job-applicants.entity";
 
 @Entity("students")
 export class Student {
@@ -22,8 +35,8 @@ export class Student {
   })
   birth_date?: Date;
 
-  @ManyToMany(() => Job, (job) => job.applicants)
-  jobs_applied: Job[];
+  @OneToMany(() => JobApplicant, (jobApplicant) => jobApplicant.student)
+  jobs_applied: JobApplicant[];
 
   @Column()
   curriculum_id: string;

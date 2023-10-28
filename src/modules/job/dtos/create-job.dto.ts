@@ -1,7 +1,7 @@
-import { ContractType, JobTime, JobType } from "@/common/enums";
+import { ContractType, JobCourseTag, JobTime, JobType } from "@/common/enums";
 import { LocationDto } from "@/modules/curriculum/dtos/location.dto";
 import { Type } from "class-transformer";
-import { IsEnum, IsNotEmpty, IsNumber, IsNumberString, IsOptional, IsString, ValidateIf, ValidateNested } from "class-validator";
+import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsNumberString, IsOptional, IsString, ValidateIf, ValidateNested } from "class-validator";
 
 export class CreateJobDto {
   @IsNotEmpty({
@@ -120,6 +120,29 @@ export class CreateJobDto {
   })
   @IsEnum(Object.values(ContractType))
   contract_type: ContractType;
+
+  @IsNotEmpty({
+    context: {
+      message: "missing-job_tag",
+      userMessage: "Curso obrigatório",
+    },
+  })
+  @IsEnum(Object.values(JobCourseTag))
+  job_tag: JobCourseTag;
+
+  @IsNotEmpty({
+    context: {
+      message: "missing-has_sorting",
+      userMessage: "Definir se haverá triagem obrigatório",
+    },
+  })
+  @IsBoolean({
+    context: {
+      message: "invalid-has_sorting",
+      userMessage: "Definição de triagem inválido",
+    },
+  })
+  has_sorting: boolean;
 
   @IsNotEmpty({
     context: {

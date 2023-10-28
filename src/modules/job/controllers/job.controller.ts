@@ -62,9 +62,8 @@ export class JobController {
   async applyJob(@Req() req: Request, @Param("code") code: string) {
     const requestingUser = req.user as User;
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
-    const updatedJob = await this.jobApplicantService.applyJob(requestingUser, job);
-    delete updatedJob.applicants;
-    return { ok: true, job: updatedJob };
+    return this.jobApplicantService.applyJob(requestingUser, job);
+    // return { ok: true };
   }
 
   @Get("/applicants/:code")
@@ -72,5 +71,13 @@ export class JobController {
   async getApplicants(@Req() req: Request, @Param("code") code: string) {
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
     return { ok: true, applicants: job.applicants };
+  }
+
+  @Post("/applicants/:code/sorted-students")
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
+  async sortStudents(@Req() req: Request, @Param("code") code: string, @Body() studentIds: string[]) {
+    const { job } = await this.jobQueryService.getJobDataByCode(code, true);
+    const sortedStudents = await this.jobApplicantService.sendSortedStudents(job, studentIds);
+    return { ok: true, applicants: sortedStudents };
   }
 }

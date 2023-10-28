@@ -3,26 +3,37 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Job } from "../job.entity";
 import { Repository } from "typeorm";
 import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
+import { CreateJobPayload } from "../interfaces/create-job.payload";
+import ApiError from "@/common/error";
 
 @Injectable()
 export class JobRepository {
   constructor(@InjectRepository(Job) private readonly jobRepository: Repository<Job>) {}
 
   async save(job: Job) {
-    return await this.jobRepository.save(job);
+    try {
+      return await this.jobRepository.save(job);
+    } catch (error) {
+      console.log(error);
+      throw new ApiError("error-saving-job", "Erro ao salvar vaga", 500);
+    }
   }
 
-  async createJob(createJobDto: Partial<Job>) {
-    const job = await this.jobRepository.save(createJobDto);
-    await this.jobRepository.save(job);
-    return job;
+  async createJob(createJobDto: CreateJobPayload) {
+    try {
+      const job = await this.jobRepository.save(createJobDto);
+      return job;
+    } catch (error) {
+      console.log(error);
+      throw new ApiError("error-saving-job", "Erro ao salvar vaga", 500);
+    }
   }
 
   async getAllJobs(options?: JobsListOptionsDto) {
     const { page = 1, per_page = 10 } = options;
     const qb = this.jobRepository.createQueryBuilder("jobs");
 
-    qb.innerJoinAndSelect("jobs.applicants", "applicants");
+    qb.leftJoinAndSelect("jobs.applicants", "applicants");
     options.contract_type &&
       qb.andWhere("jobs.contract_type = :contract_type", {
         contract_type: options.contract_type,
@@ -54,10 +65,9 @@ export class JobRepository {
     qb.where("jobs.code = :code", { code });
     if (withApplicants) {
       qb.leftJoinAndSelect("jobs.applicants", "applicants");
-      qb.leftJoinAndSelect("applicants.user", "user");
     }
     const job = await qb.getOne();
-    return { job, totalApllicants: job.applicants?.length };
+    return { job, totalApplicants: job?.applicants?.length };
   }
 
   async updateJob(job: Job, updateJobDto: Partial<Job>) {
