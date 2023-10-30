@@ -3,7 +3,8 @@ import { ProfileAddress } from "@/modules/curriculum/dtos/profile-address.dto";
 import { ProfileEducation } from "@/modules/curriculum/dtos/profile-education.dto";
 import { ProfilePreviousExperience } from "@/modules/curriculum/dtos/profile-previous-experience.dto";
 import { Type } from "class-transformer";
-import { IsArray, IsOptional, IsString, ValidateNested } from "class-validator";
+import { IsArray, IsEnum, IsIn, IsNotEmpty, IsOptional, IsString, ValidateNested } from "class-validator";
+import { StudentShift } from "../enums";
 
 export class CreateStudentDto {
   @IsOptional()
@@ -48,4 +49,18 @@ export class CreateStudentDto {
     },
   })
   certifications?: string[];
+
+  @IsNotEmpty({
+    context: {
+      message: "missing-shift",
+      userMessage: "Turno obrigatório",
+    },
+  })
+  @IsIn(Object.values(StudentShift), {
+    context: {
+      message: "invalid-shift",
+      userMessage: "Turno inválido",
+    },
+  })
+  shift: StudentShift;
 }

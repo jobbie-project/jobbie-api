@@ -9,10 +9,11 @@ import { JobHelper } from "./helpers/job.helper";
 import { JobApplicationService } from "./services/job-application.service";
 import { JobMailService } from "./services/mail/job-mail.service";
 import { JobApplicantsModule } from "../job_applicants/job-applicants.module";
+import { FatecModule } from "../fatec/fatec.module";
 
 @Module({
   controllers: [JobController],
-  imports: [TypeOrmModule.forFeature([Job]), JobApplicantsModule],
+  imports: [TypeOrmModule.forFeature([Job]), JobApplicantsModule, FatecModule],
   providers: [JobCreationService, JobQueryService, JobRepository, JobHelper, JobApplicationService, JobMailService],
 })
 export class JobModule {}

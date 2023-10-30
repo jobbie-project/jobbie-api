@@ -19,7 +19,7 @@ export class StudentCreationService {
   async create(requestingUser: User, createStudentDto: CreateStudentDto) {
     const { name, phone, fatec_education, ...curriculum } = createStudentDto;
     const newCurriculum = await this.curriculumService.createCurriculum({ ...curriculum, ...fatec_education });
-    const newStudent = await this.studentRepository.create({ curriculum: newCurriculum, phone, user: requestingUser });
+    const newStudent = await this.studentRepository.create({ curriculum: newCurriculum, phone, user: requestingUser, shift: createStudentDto.shift });
     const user = await this.userQueryService.findOne({ key: "id", value: requestingUser.id });
     user.student = newStudent;
     await this.userCreationService.update(user.id, { ...user, profile_completed: true, name: createStudentDto.name ?? user.name });

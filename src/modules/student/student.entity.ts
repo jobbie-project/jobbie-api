@@ -15,6 +15,7 @@ import { User } from "../user/user.entity";
 import { Job } from "../job/job.entity";
 import { Curriculum } from "../curriculum/curriculum.entity";
 import { JobApplicant } from "../job_applicants/job-applicants.entity";
+import { StudentShift } from "./enums";
 
 @Entity("students")
 export class Student {
@@ -34,6 +35,12 @@ export class Student {
     nullable: true,
   })
   birth_date?: Date;
+
+  @Column({
+    type: "enum",
+    enum: StudentShift,
+  })
+  shift: StudentShift;
 
   @OneToMany(() => JobApplicant, (jobApplicant) => jobApplicant.student)
   jobs_applied: JobApplicant[];

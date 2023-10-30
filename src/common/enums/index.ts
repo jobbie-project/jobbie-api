@@ -1,6 +1,7 @@
 export enum JobType {
   FACE_TO_FACE = "face_to_face",
   REMOTE = "remote",
+  HYBRID = "hybrid",
 }
 
 export enum ContractType {
@@ -22,11 +23,4 @@ export enum JobStatus {
   OPEN = "open",
   INACTIVE = "inactive",
   CLOSED = "closed",
-}
-
-export enum JobCourseTag {
-  ADS = "Análise e Desenvolvimento de Sistemas",
-  SBM = "Sistemas Biomédicos",
-  GNI = "Gestão de Negócios e Inovação",
-  RH = "Recursos Humanos",
 }

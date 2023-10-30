@@ -1,4 +1,4 @@
-import { ContractType, JobCourseTag, JobTime, JobType } from "@/common/enums";
+import { ContractType, JobTime, JobType } from "@/common/enums";
 import { LocationDto } from "@/modules/curriculum/dtos/location.dto";
 import { Type } from "class-transformer";
 import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsNumberString, IsOptional, IsString, ValidateIf, ValidateNested } from "class-validator";
@@ -123,12 +123,20 @@ export class CreateJobDto {
 
   @IsNotEmpty({
     context: {
-      message: "missing-job_tag",
-      userMessage: "Curso obrigatório",
+      message: "missing-job_tag_id",
+      userMessage: "ID do curso obrigatório",
     },
   })
-  @IsEnum(Object.values(JobCourseTag))
-  job_tag: JobCourseTag;
+  @IsNumberString(
+    {},
+    {
+      context: {
+        message: "invalid-job_tag_id",
+        userMessage: "ID do curso inválido",
+      },
+    }
+  )
+  job_tag: string;
 
   @IsNotEmpty({
     context: {
