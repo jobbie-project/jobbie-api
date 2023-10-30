@@ -29,7 +29,8 @@ export class JobController {
   @Get()
   @UseGuards(JwtAuthGuard)
   async getJobs(@Req() req: Request, @Query() query: JobsListOptionsDto) {
-    const { jobs, total } = await this.jobQueryService.getAllJobs(query);
+    const requestingUser = req.user as User;
+    const { jobs, total } = await this.jobQueryService.getAllJobs(requestingUser, query);
     return { ok: true, total, jobs };
   }
 

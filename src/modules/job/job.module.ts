@@ -10,10 +10,11 @@ import { JobApplicationService } from "./services/job-application.service";
 import { JobMailService } from "./services/mail/job-mail.service";
 import { JobApplicantsModule } from "../job_applicants/job-applicants.module";
 import { FatecModule } from "../fatec/fatec.module";
+import { UserModule } from "../user/user.module";
 
 @Module({
   controllers: [JobController],
-  imports: [TypeOrmModule.forFeature([Job]), JobApplicantsModule, FatecModule],
+  imports: [TypeOrmModule.forFeature([Job]), JobApplicantsModule, FatecModule, UserModule],
   providers: [JobCreationService, JobQueryService, JobRepository, JobHelper, JobApplicationService, JobMailService],
 })
 export class JobModule {}

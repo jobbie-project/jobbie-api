@@ -75,6 +75,7 @@ export class Job {
   job_time: JobTime;
 
   @ManyToOne(() => FatecCourse, (fatec_courses) => fatec_courses.jobs)
+  @JoinColumn({ name: "fatec_course_id" })
   fatec_course: FatecCourse;
 
   @Column({

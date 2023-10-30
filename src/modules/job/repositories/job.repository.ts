@@ -45,6 +45,14 @@ export class JobRepository {
       });
     options.type && qb.andWhere("jobs.type = :type", { type: options.type });
 
+    if (options.job_course_id) {
+      qb.andWhere("jobs.fatec_course_id = :fatec_course_id", { fatec_course_id: options.job_course_id });
+    }
+
+    if (options.owner_admin_id) {
+      qb.andWhere("jobs.owner_admin_id = :owner_admin_id", { owner_admin_id: options.owner_admin_id });
+    }
+
     qb.skip((page - 1) * per_page);
 
     qb.take(per_page);

@@ -1,9 +1,19 @@
 import { ContractType, JobTime, JobType } from "@/common/enums";
+import { Optional } from "@nestjs/common";
 import { IsEnum, IsOptional } from "class-validator";
 
 export class JobsListOptionsDto {
   @IsOptional()
   page?: number;
+
+  @Optional()
+  job_course_id?: string;
+
+  @Optional()
+  owner_company_id?: string;
+
+  @Optional()
+  owner_admin_id?: string;
 
   @IsOptional()
   per_page?: number;
