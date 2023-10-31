@@ -72,6 +72,7 @@ export class JobRepository {
     const qb = this.jobRepository.createQueryBuilder("jobs");
     qb.where("jobs.code = :code", { code });
     if (withApplicants) {
+      qb.leftJoinAndSelect("jobs.fatec_course", "fatec_course");
       qb.leftJoinAndSelect("jobs.applicants", "applicants");
       qb.leftJoinAndSelect("applicants.student", "student");
       qb.leftJoinAndSelect("student.user", "user");

@@ -9,7 +9,7 @@ import ApiError from "@/common/error";
 import { JobApplicantsService } from "@/modules/job_applicants/services/job-applicants.service";
 
 @Injectable()
-export class JobApplicationService {
+export class JobApplyService {
   constructor(
     private readonly jobCreationService: JobCreationService,
     private readonly jobMailService: JobMailService,
@@ -17,12 +17,16 @@ export class JobApplicationService {
   ) {}
 
   async applyJob(requestingUser: User, job: Job) {
+    if (job.fatec_course.id !== requestingUser.student.curriculum.fatec_course.id) {
+      throw new ApiError("job-course-does-not-match", "Vaga não pertence ao curso do aluno", 500);
+    }
     let was_sended = false;
     if (!job.has_sorting) {
       await this.jobMailService.sendJobApplicationToOwnerEmail(job, requestingUser);
       was_sended = true;
     }
-    return await this.jobApplicantsService.applyJob(requestingUser.student, job, was_sended);
+    const jobApplied = await this.jobApplicantsService.applyJob(requestingUser.student, job, was_sended);
+    return;
   }
 
   async sendSortedStudents(job: Job, sortedStudentsId: string[]) {

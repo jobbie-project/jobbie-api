@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { EducationLevel } from "./enums";
 import { TechStack } from "../tech-stacks/tech-stacks.entity";
 import { Student } from "../student/student.entity";
@@ -32,9 +32,11 @@ export class Curriculum {
   }[];
 
   @ManyToOne(() => FatecInstitution, (fatec_institutions) => fatec_institutions.curriculums)
+  @JoinColumn({ name: "fatec_institution_id" })
   fatec_institution: FatecInstitution;
 
   @ManyToOne(() => FatecCourse, (fatec_courses) => fatec_courses.curriculums)
+  @JoinColumn({ name: "fatec_course_id" })
   fatec_course: FatecCourse;
 
   @Column()

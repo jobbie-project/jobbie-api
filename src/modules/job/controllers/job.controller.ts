@@ -8,14 +8,17 @@ import { JobCreationService } from "../services/job-creation.service";
 import { User } from "@/modules/user/user.entity";
 import { JobQueryService } from "../services/job-query.service";
 import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
-import { JobApplicationService } from "../services/job-application.service";
+import { JobApplyService } from "../services/job-apply.service";
+import { JobApplicantsService } from "@/modules/job_applicants/services/job-applicants.service";
+import ApiError from "@/common/error";
 
 @Controller("job")
 export class JobController {
   constructor(
     private readonly jobCreationService: JobCreationService,
     private readonly jobQueryService: JobQueryService,
-    private readonly jobApplicantService: JobApplicationService
+    private readonly jobApplyService: JobApplyService,
+    private readonly jobApplicantsService: JobApplicantsService
   ) {}
 
   @Post("create")
@@ -32,6 +35,14 @@ export class JobController {
     const requestingUser = req.user as User;
     const { jobs, total } = await this.jobQueryService.getAllJobs(requestingUser, query);
     return { ok: true, total, jobs };
+  }
+
+  @Get("/my-applications")
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
+  async getMyApplications(@Req() req: Request) {
+    const requestingUser = req.user as User;
+    const jobs = await this.jobApplicantsService.getStudentAppliedJobs(requestingUser);
+    return { ok: true, jobs };
   }
 
   @Get(":code")
@@ -63,8 +74,9 @@ export class JobController {
   async applyJob(@Req() req: Request, @Param("code") code: string) {
     const requestingUser = req.user as User;
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
-    return this.jobApplicantService.applyJob(requestingUser, job);
-    // return { ok: true };
+
+    console.log(requestingUser.student);
+    return this.jobApplyService.applyJob(requestingUser, job);
   }
 
   @Get("/applicants/:code")
@@ -78,7 +90,7 @@ export class JobController {
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
   async sortStudents(@Req() req: Request, @Param("code") code: string, @Body() payload: { studentIds: string[] }) {
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
-    const sortedStudents = await this.jobApplicantService.sendSortedStudents(job, payload.studentIds);
+    const sortedStudents = await this.jobApplyService.sendSortedStudents(job, payload.studentIds);
     return { ok: true, applicants: sortedStudents };
   }
 }

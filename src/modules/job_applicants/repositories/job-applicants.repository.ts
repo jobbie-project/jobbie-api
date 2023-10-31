@@ -30,6 +30,15 @@ export class JobApplicantRepository {
     return jobApplicants;
   }
 
+  async getStudentAppliedJobs(studentId: string) {
+    const qb = this.jobApplicantRepository.createQueryBuilder("job_applicants");
+    qb.leftJoinAndSelect("job_applicants.job", "job");
+    qb.where("job_applicants.student_id = :studentId", { studentId });
+    const jobApplicants = await qb.getMany();
+    const jobs = jobApplicants.map((jobApplicant) => jobApplicant.job);
+    return jobs;
+  }
+
   async setWasSendedOntoStudentWithJobId(jobId: string, studentsId: string[]) {
     const qb = this.jobApplicantRepository.createQueryBuilder("job_applicants");
     qb.where("job_applicants.job_id = :jobId", { jobId });

@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { JobApplicantRepository } from "../repositories/job-applicants.repository";
 import { Job } from "@/modules/job/job.entity";
 import { Student } from "@/modules/student/student.entity";
+import { User } from "@/modules/user/user.entity";
 
 @Injectable()
 export class JobApplicantsService {
@@ -23,5 +24,9 @@ export class JobApplicantsService {
     const jobApplicants = await this.jobApplicantRepository.loadAllStudentsAppliedByJobId(job.id);
     // TODO: Aqui entra a função para gerar os curriculos e enviar por email para a empresa
     await this.jobApplicantRepository.setWasSendedOntoStudentWithJobId(job.id, studentsId);
+  }
+
+  async getStudentAppliedJobs(requestingUser: User) {
+    return await this.jobApplicantRepository.getStudentAppliedJobs(requestingUser.student.id);
   }
 }
