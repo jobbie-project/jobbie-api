@@ -76,9 +76,9 @@ export class JobController {
 
   @Post("/applicants/:code/sorted-students")
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
-  async sortStudents(@Req() req: Request, @Param("code") code: string, @Body() studentIds: string[]) {
+  async sortStudents(@Req() req: Request, @Param("code") code: string, @Body() payload: { studentIds: string[] }) {
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
-    const sortedStudents = await this.jobApplicantService.sendSortedStudents(job, studentIds);
+    const sortedStudents = await this.jobApplicantService.sendSortedStudents(job, payload.studentIds);
     return { ok: true, applicants: sortedStudents };
   }
 }

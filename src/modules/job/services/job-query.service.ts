@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { JobRepository } from "../repositories/job.repository";
-import { JobsListOptions } from "../interfaces/jobs-list-options.interface";
 import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
 import { UserQueryService } from "@/modules/user/services/user-query.service";
 import { User } from "@/modules/user/user.entity";

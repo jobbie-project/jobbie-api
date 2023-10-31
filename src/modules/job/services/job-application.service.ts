@@ -26,7 +26,7 @@ export class JobApplicationService {
   }
 
   async sendSortedStudents(job: Job, sortedStudentsId: string[]) {
-    const allStudentsAppliedId = job.applicants.map((applicant) => applicant.student_id);
+    const allStudentsAppliedId = job.applicants.map((applicant) => `${applicant.student_id}`);
     sortedStudentsId.forEach((studentId) => {
       if (!allStudentsAppliedId.includes(studentId)) {
         throw new ApiError("student-did-not-applied", "Aluno não aplicou para esta vaga", 500);

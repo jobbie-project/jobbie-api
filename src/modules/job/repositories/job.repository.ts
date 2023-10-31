@@ -73,6 +73,8 @@ export class JobRepository {
     qb.where("jobs.code = :code", { code });
     if (withApplicants) {
       qb.leftJoinAndSelect("jobs.applicants", "applicants");
+      qb.leftJoinAndSelect("applicants.student", "student");
+      qb.leftJoinAndSelect("student.user", "user");
     }
     const job = await qb.getOne();
     return { job, totalApplicants: job?.applicants?.length };
