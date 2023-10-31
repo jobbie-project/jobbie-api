@@ -74,8 +74,6 @@ export class JobController {
   async applyJob(@Req() req: Request, @Param("code") code: string) {
     const requestingUser = req.user as User;
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
-
-    console.log(requestingUser.student);
     return this.jobApplyService.applyJob(requestingUser, job);
   }
 

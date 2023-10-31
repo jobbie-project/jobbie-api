@@ -34,6 +34,7 @@ export class JobRepository {
     const qb = this.jobRepository.createQueryBuilder("jobs");
 
     qb.leftJoinAndSelect("jobs.applicants", "applicants");
+    qb.addSelect("jobs.created_at");
     options.contract_type &&
       qb.andWhere("jobs.contract_type = :contract_type", {
         contract_type: options.contract_type,

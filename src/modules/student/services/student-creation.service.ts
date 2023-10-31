@@ -32,9 +32,9 @@ export class StudentCreationService {
   }
 
   async update(requestingUser: User, UpdateStudentPayload: UpdateStudentPayload) {
-    const { name, phone, fatec_education, ...curriculum } = UpdateStudentPayload;
+    const { name, phone, shift, fatec_education, ...curriculum } = UpdateStudentPayload;
     await this.userCreationService.update(requestingUser.id, { name });
     await this.curriculumService.update(UpdateStudentPayload.curriculumId, { ...curriculum, ...fatec_education });
-    return await this.studentRepository.update(requestingUser.student.id, { phone });
+    return await this.studentRepository.update(requestingUser.student.id, { phone, shift });
   }
 }
