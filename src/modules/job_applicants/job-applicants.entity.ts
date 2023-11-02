@@ -24,7 +24,7 @@ export class JobApplicant {
   @JoinColumn({ name: "student_id" })
   student: Student;
 
-  @CreateDateColumn({ select: false })
+  @CreateDateColumn({ select: true })
   created_at: Date;
 
   @UpdateDateColumn({ select: false })

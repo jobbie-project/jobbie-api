@@ -5,6 +5,7 @@ import { Repository } from "typeorm";
 import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
 import { CreateJobPayload } from "../interfaces/create-job.payload";
 import ApiError from "@/common/error";
+import { JobStatus } from "@/common/enums";
 
 @Injectable()
 export class JobRepository {
@@ -31,9 +32,10 @@ export class JobRepository {
 
   async getAllJobs(options?: JobsListOptionsDto) {
     const { page = 1, per_page = 10 } = options;
-    const qb = this.jobRepository.createQueryBuilder("jobs");
+    const qb = this.jobRepository.createQueryBuilder("jobs").withDeleted();
 
     qb.leftJoinAndSelect("jobs.applicants", "applicants");
+    qb.leftJoinAndSelect("jobs.fatec_course", "fatec_course");
     qb.addSelect("jobs.created_at");
     options.contract_type &&
       qb.andWhere("jobs.contract_type = :contract_type", {
@@ -70,16 +72,23 @@ export class JobRepository {
   }
 
   async getJobDataByCode(code: string, withApplicants?: boolean) {
-    const qb = this.jobRepository.createQueryBuilder("jobs");
-    qb.where("jobs.code = :code", { code });
-    if (withApplicants) {
-      qb.leftJoinAndSelect("jobs.fatec_course", "fatec_course");
-      qb.leftJoinAndSelect("jobs.applicants", "applicants");
-      qb.leftJoinAndSelect("applicants.student", "student");
-      qb.leftJoinAndSelect("student.user", "user");
+    try {
+      const qb = this.jobRepository.createQueryBuilder("jobs");
+      qb.where("jobs.code = :code", { code });
+      if (withApplicants) {
+        qb.leftJoinAndSelect("jobs.fatec_course", "job_fatec_course");
+        qb.leftJoinAndSelect("jobs.applicants", "applicants");
+        qb.leftJoinAndSelect("applicants.student", "student");
+        qb.leftJoinAndSelect("student.curriculum", "curriculum");
+        qb.leftJoinAndSelect("curriculum.fatec_course", "fatec_course");
+        qb.leftJoinAndSelect("student.user", "user");
+      }
+      const job = await qb.getOne();
+      return { job, totalApplicants: job?.applicants?.length };
+    } catch (error) {
+      console.log(error);
+      throw new ApiError("error-getting-job", "Erro ao buscar vaga", 500);
     }
-    const job = await qb.getOne();
-    return { job, totalApplicants: job?.applicants?.length };
   }
 
   async updateJob(job: Job, updateJobDto: Partial<Job>) {
@@ -92,6 +101,7 @@ export class JobRepository {
   }
 
   async deleteJob(job: Job) {
-    await this.jobRepository.remove(job);
+    await this.jobRepository.update(job.id, { status: JobStatus.CLOSED });
+    await this.jobRepository.softDelete({ id: job.id });
   }
 }

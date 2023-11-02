@@ -17,7 +17,7 @@ export class JobApplyService {
   ) {}
 
   async applyJob(requestingUser: User, job: Job) {
-    if (job.fatec_course.id !== requestingUser.student.curriculum.fatec_course.id) {
+    if (job.fatec_course_id !== requestingUser.student.curriculum.fatec_course.id) {
       throw new ApiError("job-course-does-not-match", "Vaga não pertence ao curso do aluno", 500);
     }
     let was_sended = false;
@@ -29,13 +29,13 @@ export class JobApplyService {
     return;
   }
 
-  async sendSortedStudents(job: Job, sortedStudentsId: string[]) {
+  async sendSortedStudents(job: Job, payload: { studentIds: string[]; email: string }) {
     const allStudentsAppliedId = job.applicants.map((applicant) => `${applicant.student_id}`);
-    sortedStudentsId.forEach((studentId) => {
+    payload.studentIds.forEach((studentId) => {
       if (!allStudentsAppliedId.includes(studentId)) {
         throw new ApiError("student-did-not-applied", "Aluno não aplicou para esta vaga", 500);
       }
     });
-    await this.jobApplicantsService.sendAllStudentsToJob(job, sortedStudentsId);
+    await this.jobApplicantsService.sendAllStudentsToJob(job, payload.studentIds, payload.email);
   }
 }

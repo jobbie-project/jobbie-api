@@ -74,6 +74,9 @@ export class Job {
   @Column({ type: "enum", enum: JobTime })
   job_time: JobTime;
 
+  @Column()
+  fatec_course_id: string;
+
   @ManyToOne(() => FatecCourse, (fatec_courses) => fatec_courses.jobs)
   @JoinColumn({ name: "fatec_course_id" })
   fatec_course: FatecCourse;

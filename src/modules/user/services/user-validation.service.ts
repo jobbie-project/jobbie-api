@@ -31,7 +31,7 @@ export class UserValidationService {
     const user = await this.userQueryService.findOne({ key: "email", value: email });
     if (!user) throw new ApiError("email-not-found", "Usuário não encontrado", 404, true);
     const token = await this.userHelper.generateEmailConfirmationToken(email);
-    await this.userMailService.sendVerificationEmail(user, token);
+    await this.userMailService.sendVerificationEmail(user.email, user.name, token);
     await this.userRepository.update(user.id, { email_confirmation_token: token });
     return token;
   }

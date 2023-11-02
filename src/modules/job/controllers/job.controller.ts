@@ -11,6 +11,7 @@ import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
 import { JobApplyService } from "../services/job-apply.service";
 import { JobApplicantsService } from "@/modules/job_applicants/services/job-applicants.service";
 import ApiError from "@/common/error";
+import { JobStatus } from "@/common/enums";
 
 @Controller("job")
 export class JobController {
@@ -34,7 +35,15 @@ export class JobController {
   async getJobs(@Req() req: Request, @Query() query: JobsListOptionsDto) {
     const requestingUser = req.user as User;
     const { jobs, total } = await this.jobQueryService.getAllJobs(requestingUser, query);
-    return { ok: true, total, jobs };
+    const numberJobsClosed = jobs.filter((job) => job.status === JobStatus.CLOSED).length;
+    const numberJobsOpen = jobs.filter((job) => job.status === JobStatus.OPEN).length;
+    return {
+      ok: true,
+      total,
+      jobs: requestingUser.role === UserRole.ADMIN ? jobs : jobs.filter((job) => job.status === JobStatus.OPEN),
+      closed: numberJobsClosed,
+      open: numberJobsOpen,
+    };
   }
 
   @Get("/my-applications")
@@ -42,7 +51,9 @@ export class JobController {
   async getMyApplications(@Req() req: Request) {
     const requestingUser = req.user as User;
     const jobs = await this.jobApplicantsService.getStudentAppliedJobs(requestingUser);
-    return { ok: true, jobs };
+    const numberJobsClosed = jobs.filter((job) => job.status === JobStatus.CLOSED).length;
+    const numberJobsOpen = jobs.filter((job) => job.status === JobStatus.OPEN).length;
+    return { ok: true, total: jobs.length, jobs, closed: numberJobsClosed, open: numberJobsOpen };
   }
 
   @Get(":code")
@@ -86,9 +97,9 @@ export class JobController {
 
   @Post("/applicants/:code/sorted-students")
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
-  async sortStudents(@Req() req: Request, @Param("code") code: string, @Body() payload: { studentIds: string[] }) {
+  async sortStudents(@Req() req: Request, @Param("code") code: string, @Body() payload: { studentIds: string[]; email: string }) {
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
-    const sortedStudents = await this.jobApplyService.sendSortedStudents(job, payload.studentIds);
+    const sortedStudents = await this.jobApplyService.sendSortedStudents(job, payload);
     return { ok: true, applicants: sortedStudents };
   }
 }

@@ -31,11 +31,16 @@ export class JobApplicantRepository {
   }
 
   async getStudentAppliedJobs(studentId: string) {
-    const qb = this.jobApplicantRepository.createQueryBuilder("job_applicants");
+    const qb = this.jobApplicantRepository.createQueryBuilder("job_applicants").withDeleted();
     qb.leftJoinAndSelect("job_applicants.job", "job");
+    qb.leftJoinAndSelect("job.fatec_course", "fatec_course");
+    qb.leftJoinAndSelect("job.applicants", "applicants");
     qb.where("job_applicants.student_id = :studentId", { studentId });
+
     const jobApplicants = await qb.getMany();
-    const jobs = jobApplicants.map((jobApplicant) => jobApplicant.job);
+    const jobs = jobApplicants.map((jobApplicant) => {
+      return jobApplicant.job;
+    });
     return jobs;
   }
 

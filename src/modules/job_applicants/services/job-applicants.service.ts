@@ -20,7 +20,7 @@ export class JobApplicantsService {
     });
   }
 
-  async sendAllStudentsToJob(job: Job, studentsId: string[]) {
+  async sendAllStudentsToJob(job: Job, studentsId: string[], email: string) {
     const jobApplicants = await this.jobApplicantRepository.loadAllStudentsAppliedByJobId(job.id);
     // TODO: Aqui entra a função para gerar os curriculos e enviar por email para a empresa
     await this.jobApplicantRepository.setWasSendedOntoStudentWithJobId(job.id, studentsId);

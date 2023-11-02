@@ -101,6 +101,7 @@ export class CreateJobDto {
       userMessage: "Email do responsável inválido",
     },
   })
+  @ValidateIf((o) => o.has_sorting === true)
   owner_email: string;
 
   @IsNotEmpty({

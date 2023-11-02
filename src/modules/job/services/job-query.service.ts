@@ -10,14 +10,16 @@ export class JobQueryService {
   constructor(private readonly jobRepository: JobRepository, private readonly userQueryService: UserQueryService) {}
 
   async getAllJobs(requestingUser: User, query?: JobsListOptionsDto) {
-    if (requestingUser.role === UserRole.STUDENT) {
-      const user = await this.userQueryService.findOne({
-        key: "id",
-        value: requestingUser.id,
-        withStudentAndCurriculum: true,
-      });
-      query.job_course_id = user.student.curriculum.fatec_course.id;
-    } else if (requestingUser.role === UserRole.ADMIN) {
+    // if (requestingUser.role === UserRole.STUDENT) {
+    //   const user = await this.userQueryService.findOne({
+    //     key: "id",
+    //     value: requestingUser.id,
+    //     withStudentAndCurriculum: true,
+    //   });
+    //   query.job_course_id = user.student.curriculum.fatec_course.id;
+    // } else
+
+    if (requestingUser.role === UserRole.ADMIN) {
       query.owner_admin_id = requestingUser.id;
     }
     return await this.jobRepository.getAllJobs(query);

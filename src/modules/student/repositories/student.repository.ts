@@ -25,4 +25,14 @@ export class StudentRepository {
     const updatedStudent = await this.studentRepository.save({ id: studentId, ...updateStudentPayload });
     return updatedStudent;
   }
+
+  async getStudentData(studentId: string): Promise<Student> {
+    const qb = this.studentRepository.createQueryBuilder("student");
+    qb.leftJoinAndSelect("student.curriculum", "curriculum");
+    qb.leftJoinAndSelect("student.user", "user");
+    qb.leftJoinAndSelect("curriculum.fatec_course", "fatec_course");
+    qb.leftJoinAndSelect("curriculum.fatec_institution", "fatec_institution");
+    const student = await qb.where("student.id = :studentId", { studentId }).getOne();
+    return student;
+  }
 }

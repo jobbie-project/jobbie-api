@@ -22,21 +22,17 @@ export class UserCreationService {
       key: "email",
       value: userToCreate.email,
     });
-    if (userExists)
-      throw new ApiError(
-        "email-already-in-use",
-        "Este email já está em uso",
-        400
-      );
-    const token = await this.userHelper.generateEmailConfirmationToken(
-      userToCreate.email
-    );
-    const user = await this.userRepository.create({
-      ...userToCreate,
-      email_confirmation_token: token,
-    });
-    await this.userMailService.sendVerificationEmail(user, token);
-    return user;
+    if (userExists) throw new ApiError("email-already-in-use", "Este email já está em uso", 400);
+    const token = await this.userHelper.generateEmailConfirmationToken(userToCreate.email);
+    const hasError = await this.userMailService.sendVerificationEmail(userToCreate.email, userToCreate.name, token);
+    if (!hasError) {
+      const user = await this.userRepository.create({
+        ...userToCreate,
+        email_confirmation_token: token,
+      });
+      return user;
+    }
+    throw new ApiError("error-sending-email", "Erro ao enviar email de confirmação", 500);
   }
 
   async update(id: string, userToUpdate: UpdateUserDto) {

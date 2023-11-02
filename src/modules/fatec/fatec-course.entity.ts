@@ -10,6 +10,11 @@ export class FatecCourse {
   @Column()
   name: string;
 
+  @Column({
+    default: "NONE",
+  })
+  abbreviation: string;
+
   @OneToMany(() => Curriculum, (curriculum) => curriculum.fatec_course)
   curriculums: Curriculum[];
 

@@ -37,4 +37,8 @@ export class StudentCreationService {
     await this.curriculumService.update(UpdateStudentPayload.curriculumId, { ...curriculum, ...fatec_education });
     return await this.studentRepository.update(requestingUser.student.id, { phone, shift });
   }
+
+  async getStudentData(studentId: string) {
+    return await this.studentRepository.getStudentData(studentId);
+  }
 }

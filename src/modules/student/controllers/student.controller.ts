@@ -1,5 +1,5 @@
 import { JwtAuthGuard } from "@/common/guards/jwt-auth.guard";
-import { Body, Controller, Patch, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
 import { StudentCreationService } from "../services/student-creation.service";
 import { User } from "@/modules/user/user.entity";
 import { Request } from "express";
@@ -29,6 +29,13 @@ export class StudentController {
   async update(@Req() req: Request, @Body() createStudentDto: CreateStudentDto) {
     const user = req.user as User;
     const student = await this.studentCreationService.update(user, { curriculumId: user.student.curriculum_id, ...createStudentDto });
+    return { ok: true, student };
+  }
+
+  @Get(":studentId")
+  @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.ADMIN, UserRole.COMPANY]))
+  async getStudentData(@Param("studentId") studentId: string) {
+    const student = await this.studentCreationService.getStudentData(studentId);
     return { ok: true, student };
   }
 }
