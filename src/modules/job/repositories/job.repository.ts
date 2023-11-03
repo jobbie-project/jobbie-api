@@ -38,16 +38,23 @@ export class JobRepository {
     qb.leftJoinAndSelect("jobs.fatec_course", "fatec_course");
     qb.addSelect("jobs.created_at");
     options.contract_type &&
-      qb.andWhere("jobs.contract_type = :contract_type", {
+      qb.andWhere("jobs.contract_type = ANY(:contract_type)", {
         contract_type: options.contract_type,
       });
-    options.job_time && qb.andWhere("jobs.job_time = :job_time", { job_time: options.job_time });
+    options.job_time &&
+      qb.andWhere("jobs.job_time = ANY(:job_time)", {
+        job_time: options.job_time,
+      });
+
     options.position &&
       qb.andWhere("jobs.position ILIKE :position", {
         position: `%${options.position}%`,
       });
-    options.type && qb.andWhere("jobs.type = :type", { type: options.type });
 
+    options.type &&
+      qb.andWhere("jobs.type = ANY(:type)", {
+        type: options.type,
+      });
     if (options.job_course_id) {
       qb.andWhere("jobs.fatec_course_id = :fatec_course_id", { fatec_course_id: options.job_course_id });
     }
@@ -56,15 +63,13 @@ export class JobRepository {
       qb.andWhere("jobs.owner_admin_id = :owner_admin_id", { owner_admin_id: options.owner_admin_id });
     }
 
-    qb.skip((page - 1) * per_page);
-
-    qb.take(per_page);
-
     qb.orderBy("jobs.created_at", options.order_by ?? "DESC");
 
     const jobs = await qb.getManyAndCount();
 
-    return { jobs: jobs[0], total: jobs[1] };
+    const init = (+page - 1) * +per_page;
+    const data = jobs[0].slice(init, init + per_page);
+    return { jobs: data, total: jobs[1] };
   }
 
   async getJobById(id: string) {

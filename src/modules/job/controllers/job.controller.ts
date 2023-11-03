@@ -11,7 +11,7 @@ import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
 import { JobApplyService } from "../services/job-apply.service";
 import { JobApplicantsService } from "@/modules/job_applicants/services/job-applicants.service";
 import ApiError from "@/common/error";
-import { JobStatus } from "@/common/enums";
+import { ContractType, JobStatus, JobType } from "@/common/enums";
 
 @Controller("job")
 export class JobController {
@@ -34,6 +34,12 @@ export class JobController {
   @UseGuards(JwtAuthGuard)
   async getJobs(@Req() req: Request, @Query() query: JobsListOptionsDto) {
     const requestingUser = req.user as User;
+    if (query.type) {
+      query.type = Array.isArray(query.type) ? query.type : [query.type as JobType];
+    }
+    if (query.contract_type) {
+      query.contract_type = Array.isArray(query.contract_type) ? query.contract_type : [query.contract_type as ContractType];
+    }
     const { jobs, total } = await this.jobQueryService.getAllJobs(requestingUser, query);
     const numberJobsClosed = jobs.filter((job) => job.status === JobStatus.CLOSED).length;
     const numberJobsOpen = jobs.filter((job) => job.status === JobStatus.OPEN).length;

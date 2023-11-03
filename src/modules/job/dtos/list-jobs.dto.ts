@@ -1,6 +1,6 @@
 import { ContractType, JobTime, JobType } from "@/common/enums";
 import { Optional } from "@nestjs/common";
-import { IsEnum, IsOptional } from "class-validator";
+import { IsArray, IsEnum, IsOptional } from "class-validator";
 
 export class JobsListOptionsDto {
   @IsOptional()
@@ -19,12 +19,10 @@ export class JobsListOptionsDto {
   per_page?: number;
 
   @IsOptional()
-  @IsEnum(Object.values(JobType))
-  type?: JobType;
+  type?: JobType[] | JobType;
 
   @IsOptional()
-  @IsEnum(Object.values(ContractType))
-  contract_type?: ContractType;
+  contract_type?: ContractType[] | ContractType;
 
   @IsOptional()
   @IsEnum(Object.values(JobTime))
