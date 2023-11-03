@@ -6,9 +6,8 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class AuthMailService {
   async sendResetPasswordEmail(user: User, token: string) {
-    const link = `${
-      process.env.FRONTEND_URL ?? "localhost"
-    }/redefinicao-de-senha?token=${token}`;
+    console.log(token);
+    const link = `${process.env.FRONTEND_URL ?? "localhost"}/redefinicao-de-senha?token=${token}`;
     try {
       const msg = {
         to: user.email,
@@ -22,12 +21,7 @@ export class AuthMailService {
       };
       await SendGrid.send(msg);
     } catch (error) {
-      throw new ApiError(
-        "sendgrid-error",
-        "Erro ao enviar email para redefinir a senha",
-        500,
-        true
-      );
+      throw new ApiError("sendgrid-error", "Erro ao enviar email para redefinir a senha", 500, true);
     }
   }
 }

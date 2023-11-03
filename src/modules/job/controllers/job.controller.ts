@@ -10,7 +10,6 @@ import { JobQueryService } from "../services/job-query.service";
 import { JobsListOptionsDto } from "../dtos/list-jobs.dto";
 import { JobApplyService } from "../services/job-apply.service";
 import { JobApplicantsService } from "@/modules/job_applicants/services/job-applicants.service";
-import ApiError from "@/common/error";
 import { ContractType, JobStatus, JobType } from "@/common/enums";
 
 @Controller("job")
@@ -43,10 +42,13 @@ export class JobController {
     const { jobs, total } = await this.jobQueryService.getAllJobs(requestingUser, query);
     const numberJobsClosed = jobs.filter((job) => job.status === JobStatus.CLOSED).length;
     const numberJobsOpen = jobs.filter((job) => job.status === JobStatus.OPEN).length;
+
+    const init = (+(query.page ?? 1) - 1) * 10;
+    const data = jobs.filter((job) => job.status === JobStatus.OPEN).slice(init, init + 10);
     return {
       ok: true,
       total,
-      jobs: jobs.filter((job) => job.status === JobStatus.OPEN),
+      jobs: data,
       closed: numberJobsClosed,
       open: numberJobsOpen,
     };
@@ -54,18 +56,22 @@ export class JobController {
 
   @Get("/my-applications")
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
-  async getMyApplications(@Req() req: Request) {
+  async getMyApplications(@Req() req: Request, @Query() query: { page?: string }) {
     const requestingUser = req.user as User;
     const jobs = await this.jobApplicantsService.getStudentAppliedJobs(requestingUser);
     const numberJobsClosed = jobs.filter((job) => job.status === JobStatus.CLOSED).length;
     const numberJobsOpen = jobs.filter((job) => job.status === JobStatus.OPEN).length;
-    return { ok: true, total: jobs.length, jobs, closed: numberJobsClosed, open: numberJobsOpen };
+
+    const init = (+(query.page ?? 1) - 1) * 10;
+    const data = jobs.slice(init, init + 10);
+
+    return { ok: true, total: jobs.length, jobs: data, closed: numberJobsClosed, open: numberJobsOpen };
   }
 
   @Get(":code")
   @UseGuards(JwtAuthGuard)
   async findJobByCode(@Req() req: Request, @Param("code") code: string) {
-    const { job } = await this.jobQueryService.getJobDataByCode(code);
+    const { job } = await this.jobQueryService.getJobDataByCode(code, true);
     return { ok: true, job };
   }
 
@@ -90,6 +96,7 @@ export class JobController {
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async applyJob(@Req() req: Request, @Param("code") code: string) {
     const requestingUser = req.user as User;
+    console.log(requestingUser);
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
     return this.jobApplyService.applyJob(requestingUser, job);
   }

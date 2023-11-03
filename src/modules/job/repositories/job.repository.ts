@@ -72,9 +72,7 @@ export class JobRepository {
 
     const jobs = await qb.getManyAndCount();
 
-    const init = (+page - 1) * +per_page;
-    const data = jobs[0].slice(init, init + per_page);
-    return { jobs: data, total: jobs[1] };
+    return { jobs: jobs[0], total: jobs[1] };
   }
 
   async getJobById(id: string) {
@@ -94,7 +92,7 @@ export class JobRepository {
         qb.leftJoinAndSelect("student.user", "user");
       }
 
-      options.student_name &&
+      options?.student_name &&
         qb.andWhere("user.name ILIKE :student_name", {
           student_name: `%${options.student_name}%`,
         });
