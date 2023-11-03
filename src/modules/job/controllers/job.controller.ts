@@ -46,7 +46,7 @@ export class JobController {
     return {
       ok: true,
       total,
-      jobs: requestingUser.role === UserRole.ADMIN ? jobs : jobs.filter((job) => job.status === JobStatus.OPEN),
+      jobs: jobs.filter((job) => job.status === JobStatus.OPEN),
       closed: numberJobsClosed,
       open: numberJobsOpen,
     };
@@ -96,9 +96,12 @@ export class JobController {
 
   @Get("/applicants/:code")
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.COMPANY, UserRole.ADMIN]))
-  async getApplicants(@Req() req: Request, @Param("code") code: string) {
-    const { job } = await this.jobQueryService.getJobDataByCode(code, true);
-    return { ok: true, applicants: job.applicants };
+  async getApplicants(@Req() req: Request, @Param("code") code: string, @Query() query: { page?: string; student_name?: string }) {
+    const { job, totalApplicants } = await this.jobQueryService.getJobDataByCode(code, true, query);
+    const init = (+(query.page ?? 1) - 1) * 10;
+    const data = job.applicants.slice(init, init + 10);
+
+    return { ok: true, applicants: data, total: totalApplicants };
   }
 
   @Post("/applicants/:code/sorted-students")

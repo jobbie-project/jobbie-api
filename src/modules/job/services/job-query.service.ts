@@ -29,7 +29,7 @@ export class JobQueryService {
     return await this.jobRepository.getJobById(id);
   }
 
-  async getJobDataByCode(code: string, withApplicants?: boolean) {
-    return await this.jobRepository.getJobDataByCode(code, withApplicants);
+  async getJobDataByCode(code: string, withApplicants?: boolean, options?: { page?: string; student_name?: string }) {
+    return await this.jobRepository.getJobDataByCode(code, withApplicants, options);
   }
 }

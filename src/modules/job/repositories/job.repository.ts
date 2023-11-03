@@ -59,6 +59,11 @@ export class JobRepository {
       qb.andWhere("jobs.fatec_course_id = :fatec_course_id", { fatec_course_id: options.job_course_id });
     }
 
+    options.code &&
+      qb.andWhere("jobs.code ILIKE :code", {
+        code: `%${options.code}%`,
+      });
+
     if (options.owner_admin_id) {
       qb.andWhere("jobs.owner_admin_id = :owner_admin_id", { owner_admin_id: options.owner_admin_id });
     }
@@ -76,7 +81,7 @@ export class JobRepository {
     return await this.jobRepository.findOne({ where: { id } });
   }
 
-  async getJobDataByCode(code: string, withApplicants?: boolean) {
+  async getJobDataByCode(code: string, withApplicants?: boolean, options?: { page?: string; student_name?: string }) {
     try {
       const qb = this.jobRepository.createQueryBuilder("jobs");
       qb.where("jobs.code = :code", { code });
@@ -88,6 +93,12 @@ export class JobRepository {
         qb.leftJoinAndSelect("curriculum.fatec_course", "fatec_course");
         qb.leftJoinAndSelect("student.user", "user");
       }
+
+      options.student_name &&
+        qb.andWhere("user.name ILIKE :student_name", {
+          student_name: `%${options.student_name}%`,
+        });
+
       const job = await qb.getOne();
       return { job, totalApplicants: job?.applicants?.length };
     } catch (error) {

@@ -22,6 +22,9 @@ export class JobsListOptionsDto {
   type?: JobType[] | JobType;
 
   @IsOptional()
+  code: string;
+
+  @IsOptional()
   contract_type?: ContractType[] | ContractType;
 
   @IsOptional()
