@@ -16,7 +16,7 @@ export class AuthMailService {
         subject: "Redefinir senha",
         templateId: process.env.SENDGRID_RESET_PASSWORD_EMAIL_TEMPLATE_ID,
         dynamicTemplateData: {
-          reset_password_link: link,
+          link: link,
           username: user.name,
         },
       };
