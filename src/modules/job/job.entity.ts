@@ -13,7 +13,7 @@ import {
 } from "typeorm";
 import { Student } from "../student/student.entity";
 import { Company } from "../company/company.entity";
-import { ContractType, JobStatus, JobTime, JobType } from "@/common/enums";
+import { ContractType, JobStatus, JobTime, JobType } from "../../common/enums";
 import { User } from "../user/user.entity";
 import { JobApplicant } from "../job_applicants/job-applicants.entity";
 import { FatecCourse } from "../fatec/fatec-course.entity";
