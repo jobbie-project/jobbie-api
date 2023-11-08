@@ -6,7 +6,6 @@ import { Injectable } from "@nestjs/common";
 @Injectable()
 export class AuthMailService {
   async sendResetPasswordEmail(user: User, token: string) {
-    console.log(token);
     const link = `${process.env.FRONTEND_URL ?? "localhost"}/redefinicao-de-senha?token=${token}`;
     try {
       const msg = {
