@@ -11,5 +11,6 @@ import { CurriculumModule } from "../curriculum/curriculum.module";
   imports: [TypeOrmModule.forFeature([Student]), UserModule, CurriculumModule],
   controllers: [StudentController],
   providers: [StudentCreationService, StudentRepository],
+  exports: [StudentCreationService],
 })
 export class StudentModule {}

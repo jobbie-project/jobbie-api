@@ -7,13 +7,15 @@ import { JobMailService } from "./mail/job-mail.service";
 import { JobApplicantRepository } from "@/modules/job_applicants/repositories/job-applicants.repository";
 import ApiError from "@/common/error";
 import { JobApplicantsService } from "@/modules/job_applicants/services/job-applicants.service";
+import { UserQueryService } from "@/modules/user/services/user-query.service";
+import { StudentCreationService } from "@/modules/student/services/student-creation.service";
 
 @Injectable()
 export class JobApplyService {
   constructor(
-    private readonly jobCreationService: JobCreationService,
     private readonly jobMailService: JobMailService,
-    private readonly jobApplicantsService: JobApplicantsService
+    private readonly jobApplicantsService: JobApplicantsService,
+    private readonly studentService: StudentCreationService
   ) {}
 
   async applyJob(requestingUser: User, job: Job) {
@@ -35,6 +37,15 @@ export class JobApplyService {
         throw new ApiError("student-did-not-applied", "Aluno não aplicou para esta vaga", 500);
       }
     });
+
+    const loadedUsersWithStudents: User[] = [];
+
+    for (const studentId of payload.studentIds) {
+      const { user, ...rest } = await this.studentService.getStudentData(studentId);
+      loadedUsersWithStudents.push({ ...user, student: { ...rest, user } });
+    }
+
+    await this.jobMailService.sendAllJobApplicantsToOwnerEmail(job, loadedUsersWithStudents);
     await this.jobApplicantsService.sendAllStudentsToJob(job, payload.studentIds, payload.email);
     return payload.studentIds;
   }

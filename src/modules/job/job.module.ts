@@ -12,10 +12,11 @@ import { JobApplicantsModule } from "../job_applicants/job-applicants.module";
 import { FatecModule } from "../fatec/fatec.module";
 import { UserModule } from "../user/user.module";
 import { GenerateStudentResumeService } from "@/common/services/generateResume.service";
+import { StudentModule } from "../student/student.module";
 
 @Module({
   controllers: [JobController],
-  imports: [TypeOrmModule.forFeature([Job]), JobApplicantsModule, FatecModule, UserModule],
+  imports: [TypeOrmModule.forFeature([Job]), JobApplicantsModule, FatecModule, UserModule, StudentModule],
   providers: [JobCreationService, JobQueryService, JobRepository, JobHelper, JobApplyService, JobMailService, GenerateStudentResumeService],
 })
 export class JobModule {}

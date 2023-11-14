@@ -36,7 +36,7 @@ export class JobMailService {
 
   async sendAllJobApplicantsToOwnerEmail(job: Job, requestingUsers: User[]) {
     try {
-      let attachments: AttachmentSendgrid[] = [];
+      const attachments: AttachmentSendgrid[] = [];
 
       requestingUsers.forEach((user) => {
         const attachment: AttachmentSendgrid = this.generateStudentResumeService.generateResume(job.code, user);
