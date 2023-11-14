@@ -14,6 +14,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "postinstall": "patch-package",
     "migration:generate": "npx typeorm-ts-node-esm migration:generate -d ./src/config.ts",
     "migration:run": "npx typeorm-ts-node-esm migration:run -d ./src/config.ts",
     "migration:seed": "npx typeorm-ts-node-esm migration:run --name seedFatecInstitutions1699203459896 -d ./src/config.ts",

@@ -1,0 +1,112 @@
+diff --git a/node_modules/jsonresume-theme-onepage/resume.hbs b/node_modules/jsonresume-theme-onepage/resume.hbs
+index a5bb2dd..88765fc 100644
+--- a/node_modules/jsonresume-theme-onepage/resume.hbs
++++ b/node_modules/jsonresume-theme-onepage/resume.hbs
+@@ -59,7 +59,7 @@
+   {{#if resume.basics.summary}}
+   <div id='summaryBlock' class="sectionBlock">
+     <div class='sectionName'>
+-      <span>SUMMARY</span>
++      <span>RESUMO</span>
+     </div>
+     <div class='sectionContent'>
+       <span>{{resume.basics.summary}}</span>
+@@ -71,7 +71,7 @@
+ 	{{#if resume.work.length}}
+   <div id='workBlock' class="sectionBlock">
+     <div class='sectionName'>
+-      <span>EXPERIENCE</span>
++      <span>EXPERIÊNCIA</span>
+     </div>
+     <div class='sectionContent'>
+       {{#each resume.work}}
+@@ -82,7 +82,7 @@
+ 	        </span>
+ 	        {{#if startDate}}
+ 	        <span class='date'>
+-	          {{#if startDate}}{{startDate}}{{/if}} &mdash; {{#if endDate}}{{endDate}}{{else}}Present{{/if}}
++	          {{#if startDate}}{{startDate}}{{/if}} &mdash; {{#if endDate}}{{endDate}}{{else}}Atualmente{{/if}}
+ 	        </span>
+ 	        {{/if}}
+ 	      </div>
+@@ -112,7 +112,7 @@
+ 	{{#if resume.publications.length}}
+ 	<div id='publications'>
+     <div class='sectionName'>
+-      <span>PUBLICATIONS</span>
++      <span>PUBLICAÇÕES</span>
+     </div>
+     <div class='sectionContent'>
+       {{#each resume.publications}}
+@@ -148,7 +148,7 @@
+ 	{{#if resume.awards.length}}
+ 	<div id='awards' class="sectionBlock">
+     <div class='sectionName'>
+-      <span>AWARDS</span>
++      <span>CERTIFICADOS</span>
+     </div>
+     <div class='sectionContent'>
+       {{#each resume.awards}}
+@@ -179,7 +179,7 @@
+ 	{{#if resume.volunteer.length}}
+ 	<div id='volunteer' class="sectionBlock">
+     <div class='sectionName'>
+-      <span>VOLUNTEERING</span>
++      <span>PROJETOS VOLUNTÁRIOS</span>
+     </div>
+     <div class='sectionContent'>
+       {{#each resume.volunteer}}
+@@ -187,7 +187,7 @@
+         <span class='title'>{{#if organization}}{{organization}}{{/if}}{{#if position}}, {{position}}{{/if}}</span>
+         {{#if startDate}}
+         <span class='date'>
+-          {{#if startDate}}{{startDate}}{{/if}} &mdash; {{#if endDate}}{{endDate}}{{else}}Present{{/if}}
++          {{#if startDate}}{{startDate}}{{/if}} &mdash; {{#if endDate}}{{endDate}}{{else}}Atualmente{{/if}}
+         </span>
+         {{/if}}
+         {{#if website}}
+@@ -211,7 +211,7 @@
+ 	{{#if resume.education.length}}
+ 	<div id='education' class="sectionBlock">
+     <div class='sectionName'>
+-      <span>EDUCATION</span>
++      <span>EDUCAÇÃO</span>
+     </div>
+     <div class='sectionContent'>
+       {{#each resume.education}}
+@@ -221,7 +221,7 @@
+         </span>
+         {{#if startDate}}
+         <span class='date'>
+-          {{#if startDate}}{{startDate}}{{/if}} &mdash; {{#if endDate}}{{endDate}}{{else}}Present{{/if}}
++          {{#if startDate}}{{startDate}}{{/if}} &mdash; {{#if endDate}}{{endDate}}{{else}}Atualmente{{/if}}
+         </span>
+         {{/if}}
+         <div class=''>
+@@ -249,7 +249,7 @@
+ 	{{#if resume.skills.length}}
+ 	<div id='skills' class="sectionBlock">
+     <div class='sectionName'>
+-      <span>SKILLS</span>
++      <span>HABILIDADES</span>
+     </div>
+     <div class='sectionContent'>
+       {{#each resume.skills}}
+@@ -275,7 +275,7 @@
+ 	{{#if resume.languages.length}}
+ 	<div id='languages' class="sectionBlock">
+     <div class='sectionName'>
+-      <span>LANGUAGES</span>
++      <span>IDIOMAS</span>
+     </div>
+     <div class='sectionContent'>
+       {{#each resume.languages}}
+@@ -293,7 +293,7 @@
+ 	{{#if resume.interests.length}}
+ 	<div id='interests' class="sectionBlock">
+     <div class='sectionName'>
+-      <span>INTERESTS</span>
++      <span>INTERESSES</span>
+     </div>
+     <div class='sectionContent'>
+       {{#each resume.interests}}
