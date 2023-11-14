@@ -1,6 +1,14 @@
 import { User } from "@/modules/user/user.entity";
 import { Resume } from "./resumed.interface";
 import moment from "moment-timezone";
+import { EducationLevel } from "@/modules/curriculum/enums";
+const Degrees = [
+  { value: EducationLevel.TECHNICAL, label: "Técnico" },
+  { value: EducationLevel.UNDERGRADUATE, label: "Graduação" },
+  { value: EducationLevel.POSTGRADUATE, label: "Pós-graduação" },
+  { value: EducationLevel.MASTER, label: "Mestrado" },
+  { value: EducationLevel.DOCTORATE, label: "Doutorado" },
+];
 
 export function castUserToResumed(user: User): Partial<Resume> {
   const studentCurriculum = user.student.curriculum;
@@ -21,7 +29,7 @@ export function castUserToResumed(user: User): Partial<Resume> {
         area: education.course,
         startDate: moment(education.start_date).locale("pt").format("DD-MM-YYYY"),
         endDate: moment(education.end_date).locale("pt").format("DD-MM-YYYY"),
-        studyType: education.degree,
+        studyType: Degrees.find((degree) => degree.value === education.degree)?.label,
       })),
     ],
     work: studentCurriculum.previous_experience.map((job) => ({
