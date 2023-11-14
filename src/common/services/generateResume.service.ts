@@ -4,22 +4,20 @@ import { castUserToResumed } from "../utils/cast-user-to-resumed";
 import { Injectable } from "@nestjs/common";
 import { Resume } from "../utils/resumed.interface";
 import { AttachmentSendgrid } from "@/modules/job/services/mail/job-mail.service";
-
-const { spawn } = require("child_process");
-
+import { execSync } from "child_process";
 @Injectable()
 export class GenerateStudentResumeService {
-  async generateResume(jobCode: string, userData: User): Promise<AttachmentSendgrid> {
+  generateResume(jobCode: string, userData: User): AttachmentSendgrid {
     const userResume = castUserToResumed(userData);
-    const filename = `${userData.name}-${userData.student.id}`;
+    const filename = `${userData.name}-${userData.student.id}`.split(" ").join("");
     const filePath = this.writeStudentResumeInJson(jobCode, filename, userResume);
     const outFilePath = this.runResumedCommand(jobCode, filename, filePath);
-    const dataRead = fs.readFileSync(outFilePath, { encoding: "utf-8" }).toString();
+    const dataRead = fs.readFileSync(outFilePath, { encoding: "base64" }).toString();
     return {
       content: dataRead,
-      filename: outFilePath,
-      type: "application/html",
-      disposition: "AttachmentSendgrid",
+      filename: filename,
+      type: "text/html",
+      disposition: "attachment",
     };
   }
 
@@ -38,7 +36,7 @@ export class GenerateStudentResumeService {
     return filePath;
   }
 
-  runResumedCommand(jobCode: string, filename: string, filePath: string) {
+  runResumedCommand(jobCode: string, filename: string, filePath: string): string {
     const dir = `${__dirname}/resumes-html-job-${jobCode}`;
     const outFilePath = dir + `/${filename}.html`;
 
@@ -49,13 +47,9 @@ export class GenerateStudentResumeService {
     fileExists && fs.rmSync(outFilePath);
     let childProcessSuccess = true;
 
-    const childProcess = spawn("resumed", ["render", filePath, "--theme", "jsonresume-theme-onepage", "-o", outFilePath]);
-    childProcess.stderr.on("data", (data) => {
-      console.error(`stderr: ${data}`);
-      childProcessSuccess = false;
-    });
+    execSync(`resumed render ${filePath} --theme jsonresume-theme-onepage -o ${outFilePath}`);
 
-    return childProcessSuccess ? outFilePath : null;
+    return outFilePath;
   }
 
   removeFolder(jobCode: string) {

@@ -15,35 +15,45 @@ export class JobMailService {
   constructor(private readonly generateStudentResumeService: GenerateStudentResumeService) {}
 
   async sendJobApplicationToOwnerEmail(job: Job, requestingUser: User) {
-    const attachment: AttachmentSendgrid = await this.generateStudentResumeService.generateResume(job?.code ?? "XPTO01", requestingUser);
-
-    const msg: MailDataRequired = {
-      to: job.owner_email,
-      from: "Jobbie <suportejobbie@gmail.com>",
-      subject: "Candidato para a sua vaga na Jobbie!",
-      templateId: process.env.SENDGRID_SEND_APPLICANT_EMAIL_TEMPLATE_ID,
-      dynamicTemplateData: {},
-      attachments: [attachment],
-    };
-    await SendGrid.send(msg);
+    try {
+      const attachment: AttachmentSendgrid = this.generateStudentResumeService.generateResume(job.code, requestingUser);
+      const msg: MailDataRequired = {
+        to: job.owner_email,
+        from: "Jobbie <suportejobbie@gmail.com>",
+        subject: "Candidato para a sua vaga na Jobbie!",
+        templateId: process.env.SENDGRID_SEND_APPLICATION_TO_JOB_EMAIL_TEMPLATE_ID,
+        dynamicTemplateData: {
+          job_name: job.position,
+          student_name: requestingUser.name,
+        },
+        attachments: [attachment],
+      };
+      await SendGrid.send(msg);
+    } catch (error) {
+      console.log(error.response.body.errors);
+    }
   }
 
   async sendAllJobApplicantsToOwnerEmail(job: Job, requestingUsers: User[]) {
-    let attachments: AttachmentSendgrid[];
-    requestingUsers.forEach(async (user) => {
-      this.generateStudentResumeService.generateResume(job?.code ?? "XPTO01", user).then((value) => {
-        attachments.push(value);
-      });
-    });
+    try {
+      let attachments: AttachmentSendgrid[] = [];
 
-    const msg: MailDataRequired = {
-      to: job.owner_email,
-      from: "Jobbie <suportejobbie@gmail.com>",
-      subject: "Candidatos para a sua vaga na Jobbie!",
-      templateId: process.env.SENDGRID_SEND_APPLICANT_EMAIL_TEMPLATE_ID,
-      dynamicTemplateData: {},
-      attachments: attachments,
-    };
-    await SendGrid.send(msg);
+      requestingUsers.forEach((user) => {
+        const attachment: AttachmentSendgrid = this.generateStudentResumeService.generateResume(job.code, user);
+        attachments.push(attachment);
+      });
+
+      const msg: MailDataRequired = {
+        to: job.owner_email,
+        from: "Jobbie <suportejobbie@gmail.com>",
+        subject: "Candidatos para a sua vaga na Jobbie!",
+        templateId: process.env.SENDGRID_SEND_APPLICANT_EMAIL_TEMPLATE_ID,
+        dynamicTemplateData: { job_name: job.position },
+        attachments: attachments,
+      };
+      await SendGrid.send(msg);
+    } catch (error) {
+      console.log(error.response.body.errors);
+    }
   }
 }

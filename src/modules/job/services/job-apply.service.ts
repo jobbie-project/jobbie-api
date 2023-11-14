@@ -25,8 +25,7 @@ export class JobApplyService {
       await this.jobMailService.sendJobApplicationToOwnerEmail(job, requestingUser);
       was_sended = true;
     }
-    const jobApplied = await this.jobApplicantsService.applyJob(requestingUser.student, job, was_sended);
-    return;
+    return await this.jobApplicantsService.applyJob(requestingUser.student, job, was_sended);
   }
 
   async sendSortedStudents(job: Job, payload: { studentIds: string[]; email: string }) {
@@ -37,5 +36,6 @@ export class JobApplyService {
       }
     });
     await this.jobApplicantsService.sendAllStudentsToJob(job, payload.studentIds, payload.email);
+    return payload.studentIds;
   }
 }

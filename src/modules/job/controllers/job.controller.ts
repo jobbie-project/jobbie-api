@@ -96,7 +96,6 @@ export class JobController {
   @UseGuards(JwtAuthGuard, new RoleGuard([UserRole.STUDENT]))
   async applyJob(@Req() req: Request, @Param("code") code: string) {
     const requestingUser = req.user as User;
-    console.log(requestingUser);
     const { job } = await this.jobQueryService.getJobDataByCode(code, true);
     return this.jobApplyService.applyJob(requestingUser, job);
   }
