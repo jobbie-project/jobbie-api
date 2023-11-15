@@ -1,0 +1,37 @@
+networks:
+  jobbie:
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - JWT_SECRET=${JWT_SECRET}
+      - DB_DATABASE=${DB_DATABASE}
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - SENDGRID_KEY=${SENDGRID_KEY}
+      - SENDGRID_SEND_APPLICATION_TO_JOB_EMAIL_TEMPLATE_ID=${SENDGRID_SEND_APPLICATION_TO_JOB_EMAIL_TEMPLATE_ID}
+      - SENDGRID_SEND_APPLICANT_EMAIL_TEMPLATE_ID=${SENDGRID_SEND_APPLICANT_EMAIL_TEMPLATE_ID}
+      - SENDGRID_RESET_PASSWORD_EMAIL_TEMPLATE_ID=${SENDGRID_RESET_PASSWORD_EMAIL_TEMPLATE_ID}
+    ports:
+      - ${PORT}:${PORT}
+    networks:
+      - jobbie
+
+  postgres:
+    image: ${DB_ENGINE:-postgres}:${DB_VERSION:-latest}
+    volumes:
+      - ./.docker/data/:/var/lib/postgresql
+    environment:
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+    ports:
+      - ${DB_PORT}:5432
+    restart: always
+    networks:
+      - jobbie
