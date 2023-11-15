@@ -23,6 +23,7 @@ export class JobMailService {
         subject: "Candidato para a sua vaga na Jobbie!",
         templateId: process.env.SENDGRID_SEND_APPLICATION_TO_JOB_EMAIL_TEMPLATE_ID,
         dynamicTemplateData: {
+          subject: "Candidato para a sua vaga na Jobbie!",
           job_name: job.position,
           student_name: requestingUser.name,
         },
@@ -42,13 +43,12 @@ export class JobMailService {
         const attachment: AttachmentSendgrid = this.generateStudentResumeService.generateResume(job.code, user);
         attachments.push(attachment);
       });
-
       const msg: MailDataRequired = {
         to: job.owner_email,
         from: "Jobbie <suportejobbie@gmail.com>",
         subject: "Candidatos para a sua vaga na Jobbie!",
         templateId: process.env.SENDGRID_SEND_APPLICANT_EMAIL_TEMPLATE_ID,
-        dynamicTemplateData: { job_name: job.position },
+        dynamicTemplateData: { job_name: job.position, subject: "Candidatos para a sua vaga na Jobbie!" },
         attachments: attachments,
       };
       await SendGrid.send(msg);

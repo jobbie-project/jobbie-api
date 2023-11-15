@@ -45,7 +45,7 @@ export class JobApplyService {
       loadedUsersWithStudents.push({ ...user, student: { ...rest, user } });
     }
 
-    await this.jobMailService.sendAllJobApplicantsToOwnerEmail(job, loadedUsersWithStudents);
+    await this.jobMailService.sendAllJobApplicantsToOwnerEmail({ ...job, owner_email: payload.email }, loadedUsersWithStudents);
     await this.jobApplicantsService.sendAllStudentsToJob(job, payload.studentIds, payload.email);
     return payload.studentIds;
   }
