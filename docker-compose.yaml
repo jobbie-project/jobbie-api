@@ -1,5 +1,8 @@
+
 networks:
   jobbie:
+    driver: bridge
+
 
 services:
   backend:
