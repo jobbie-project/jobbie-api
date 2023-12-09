@@ -47,7 +47,7 @@ export class JobController {
     const data = jobs.filter((job) => job.status === JobStatus.OPEN).slice(init, init + 10);
     return {
       ok: true,
-      total,
+      total: total - numberJobsClosed,
       jobs: data,
       closed: numberJobsClosed,
       open: numberJobsOpen,

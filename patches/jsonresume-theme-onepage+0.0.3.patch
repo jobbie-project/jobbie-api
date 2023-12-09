@@ -1,5 +1,5 @@
 diff --git a/node_modules/jsonresume-theme-onepage/resume.hbs b/node_modules/jsonresume-theme-onepage/resume.hbs
-index a5bb2dd..88765fc 100644
+index a5bb2dd..49383ab 100644
 --- a/node_modules/jsonresume-theme-onepage/resume.hbs
 +++ b/node_modules/jsonresume-theme-onepage/resume.hbs
 @@ -59,7 +59,7 @@
@@ -11,7 +11,7 @@ index a5bb2dd..88765fc 100644
      </div>
      <div class='sectionContent'>
        <span>{{resume.basics.summary}}</span>
-@@ -71,7 +71,7 @@
+@@ -71,18 +71,18 @@
  	{{#if resume.work.length}}
    <div id='workBlock' class="sectionBlock">
      <div class='sectionName'>
@@ -20,7 +20,11 @@ index a5bb2dd..88765fc 100644
      </div>
      <div class='sectionContent'>
        {{#each resume.work}}
-@@ -82,7 +82,7 @@
+ 			<div class="jobBlock">
+ 	      <div class='blockHeader'>
+ 	        <span class='title'>
+-	          {{#if company}}{{company}}{{/if}}{{#if position}}, {{position}}{{/if}}
++	          {{#if position}}{{position}}{{/if}}{{#if name}} - {{name}}{{/if}}
  	        </span>
  	        {{#if startDate}}
  	        <span class='date'>

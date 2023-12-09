@@ -17,6 +17,7 @@ export class UserMailService {
       };
       await SendGrid.send(msg);
     } catch (error) {
+      console.log(error.response.body.errors);
       return error;
     }
   }
