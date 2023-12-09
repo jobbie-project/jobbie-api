@@ -66,6 +66,8 @@ export class JobRepository {
 
     if (options.owner_admin_id) {
       qb.andWhere("jobs.owner_admin_id = :owner_admin_id", { owner_admin_id: options.owner_admin_id });
+    } else {
+      qb.andWhere("jobs.status = :status", { status: JobStatus.OPEN });
     }
 
     qb.orderBy("jobs.created_at", options.order_by ?? "DESC");
